@@ -16,8 +16,8 @@
     "lint": "eslint --ext .ts --fix"
   },
   "devDependencies": {
-    "@scriptwriter/eslint-config": "*",
-    "@scriptwriter/tsconfig": "*"
+    "@scriptwriter/eslint-config": "1.0.0-alpha.1",
+    "@scriptwriter/tsconfig": "1.0.0-alpha.1"
   },
   "publishConfig": {
     "access": "public",
