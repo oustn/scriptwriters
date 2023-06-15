@@ -2,6 +2,13 @@
   "name": "@scriptwriter/cli",
   "version": "0.0.0",
   "private": true,
+  "license": "MIT",
+  "author": "oustn",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "files": [
+    "lib"
+  ],
   "scripts": {
     "dev": "tsc --watch",
     "prebuild": "rm -rf lib",
@@ -11,5 +18,14 @@
   "dependencies": {
     "@scriptwriter/eslint-config": "*",
     "@scriptwriter/tsconfig": "*"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/oustn/scriptwriters.git",
+    "directory": "packages/cli"
   }
 }

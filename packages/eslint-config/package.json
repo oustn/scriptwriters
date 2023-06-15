@@ -2,12 +2,22 @@
   "name": "@scriptwriter/eslint-config",
   "version": "0.0.0",
   "private": true,
-  "main": "index.js",
   "license": "MIT",
+  "author": "oustn",
+  "main": "index.js",
   "dependencies": {
     "eslint-config-prettier": "^8.3.0",
     "eslint-config-turbo": "^1.9.3",
     "@typescript-eslint/eslint-plugin": "^5.59.11",
     "@typescript-eslint/parser": "^5.59.11"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/oustn/scriptwriters.git",
+    "directory": "packages/eslint-config"
   }
 }
