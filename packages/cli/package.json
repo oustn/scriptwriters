@@ -9,8 +9,6 @@
     "lint": "eslint --ext .ts --fix"
   },
   "dependencies": {
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-config-turbo": "^1.9.3",
     "@scriptwriter/eslint-config": "*",
     "@scriptwriter/tsconfig": "*"
   }

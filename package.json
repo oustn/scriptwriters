@@ -6,7 +6,8 @@
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,md,json}\"",
     "postinstall": "husky install",
-    "release": "turbo run build && multi-semantic-release"
+    "release": "turbo run build && multi-semantic-release",
+    "rr": "turbo run build && multi-semantic-release --dry-run"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.6.5",
