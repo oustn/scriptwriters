@@ -1,3 +1,9 @@
+# @scriptwriter/cli [1.0.0-alpha.2](https://github.com/oustn/scriptwriters/compare/@scriptwriter/cli@1.0.0-alpha.1...@scriptwriter/cli@1.0.0-alpha.2) (2023-06-15)
+
+### Bug Fixes
+
+- **cli:** test github action publish npm ([c1ae976](https://github.com/oustn/scriptwriters/commit/c1ae97619e5bd2a653114fb9b43a3f5ce8fb4cd3))
+
 # @scriptwriter/cli 1.0.0-alpha.1 (2023-06-15)
 
 ### Features
