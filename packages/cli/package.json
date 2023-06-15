@@ -1,0 +1,17 @@
+{
+  "name": "@scriptwriter/cli",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "tsc --watch",
+    "prebuild": "rm -rf lib",
+    "build": "tsc",
+    "lint": "eslint --ext .ts --fix"
+  },
+  "dependencies": {
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-config-turbo": "^1.9.3",
+    "@scriptwriter/eslint-config": "*",
+    "@scriptwriter/tsconfig": "*"
+  }
+}
