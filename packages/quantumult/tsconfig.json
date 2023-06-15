@@ -1,0 +1,9 @@
+{
+  "extends": "@scriptwriter/tsconfig/tsconfig.json",
+  "compilerOptions": {
+    "target": "ES2019",
+    "outDir": "./lib",
+    "declaration": true
+  },
+  "include": ["src/**/*"]
+}
