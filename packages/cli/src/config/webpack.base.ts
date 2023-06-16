@@ -1,6 +1,9 @@
 import type { Configuration } from "webpack";
+import { resolveEntries } from "../common/resolver.js";
 
 export const webpackBase: Configuration = {
+  entry: resolveEntries,
+
   module: {
     rules: [
       {
