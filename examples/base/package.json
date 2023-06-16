@@ -1,0 +1,17 @@
+{
+  "name": "base",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "scriptwriter-cli dev",
+    "build": "scriptwriter-cli build"
+  },
+  "dependencies": {
+    "@scriptwriter/quantumult": "*"
+  },
+  "devDependencies": {
+    "@scriptwriter/cli": "*",
+    "@types/node": "^18.16.18",
+    "typescript": "^5.1.3"
+  }
+}
