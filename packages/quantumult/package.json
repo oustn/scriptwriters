@@ -1,7 +1,6 @@
 {
-  "name": "@scriptwriter/cli",
-  "version": "0.0.0",
-  "private": true,
+  "name": "@scriptwriter/quantumult",
+  "version": "1.0.0-alpha.1",
   "license": "MIT",
   "author": "oustn",
   "main": "lib/index.js",
@@ -15,7 +14,6 @@
     "build": "tsc",
     "lint": "eslint --ext .ts --fix"
   },
-  "dependencies": {},
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
@@ -23,6 +21,6 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/oustn/scriptwriters.git",
-    "directory": "packages/cli"
+    "directory": "packages/quantumult"
   }
 }
