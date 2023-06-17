@@ -4,14 +4,16 @@ declare let $prefs: {
   removeValueForKey(key: string): void;
 };
 
+type NotifyOptions = {
+  "open-url"?: string;
+  "media-url"?: string;
+};
+
 declare let $notify: (
   title: string,
   subtitle?: string,
   body?: string,
-  options?: {
-    "open-url"?: string;
-    "media-url"?: string;
-  }
+  options?: NotifyOptions
 ) => void;
 
 declare let $done: (returnValue?: unknown) => void;
