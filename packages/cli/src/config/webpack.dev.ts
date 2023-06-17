@@ -11,6 +11,15 @@ import { WebpackConfig } from "../common/types";
 function getDevBaseConfig(): Configuration {
   return merge(webpackBase, {
     mode: "development",
+
+    devtool: false,
+
+    stats: "errors-only",
+
+    infrastructureLogging: {
+      level: "error",
+    },
+
     devServer: {
       port: 8080,
       host: "0.0.0.0",

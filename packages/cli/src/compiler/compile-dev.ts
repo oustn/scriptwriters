@@ -34,8 +34,6 @@ function runDevServer(port: number, config: ReturnType<typeof getDevConfig>) {
   // this is a hack to disable wds status log
   // (server).showStatus = function () {};
 
-  const host = get(config.devServer, "host", "localhost");
-
   server.start().catch((err) => {
     console.log(err);
   });

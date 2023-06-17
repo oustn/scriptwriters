@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "scriptwriter-cli dev",
-    "build": "scriptwriter-cli build"
+    "dev": "APP_ROOT_PATH=`pwd` scriptwriter-cli dev",
+    "build": "APP_ROOT_PATH=`pwd` scriptwriter-cli build"
   },
   "dependencies": {
     "@scriptwriter/quantumult": "*"
