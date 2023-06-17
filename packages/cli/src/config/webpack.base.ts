@@ -1,6 +1,6 @@
 import type { Configuration } from "webpack";
 import { resolveEntries } from "../common/resolver.js";
-import { resolve } from "../common/constant.js";
+import { getDist } from "../common/constant.js";
 
 export const webpackBase: Configuration = {
   entry: resolveEntries,
@@ -20,6 +20,6 @@ export const webpackBase: Configuration = {
 
   output: {
     filename: "[name].js",
-    path: resolve("dist"),
+    path: getDist(),
   },
 };

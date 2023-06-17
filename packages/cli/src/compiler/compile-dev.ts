@@ -2,12 +2,9 @@ import chalk from "chalk";
 import { getPort } from "portfinder";
 import WebpackDevServer from "webpack-dev-server";
 import webpack from "webpack";
-import lodash from "lodash";
 
 import { getDevConfig } from "../config/webpack.dev.js";
 import { GREEN } from "../common/constant.js";
-
-const { get } = lodash;
 
 function logServerInfo(port: number) {
   const ip = WebpackDevServer.internalIPSync("v4");
