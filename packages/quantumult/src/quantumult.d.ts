@@ -17,7 +17,14 @@ declare let $notify: (
 declare let $done: (returnValue?: unknown) => void;
 
 declare let $task: {
-  fetch: unknown;
+  fetch: (request: unknown) => Promise<{
+    headers: {
+      [key: string]: string;
+    };
+    body: string;
+    statusCode: number;
+    statusText: string;
+  }>;
 };
 
 declare let $request: {
