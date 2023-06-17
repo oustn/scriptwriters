@@ -3,6 +3,9 @@ import process from "node:process";
 
 import appRoot from "app-root-path";
 import { pathToFileURL } from "url";
+import fs from "node:fs";
+
+let devHost = "";
 
 export const CWD = process.cwd();
 export const ROOT = appRoot.path;
@@ -35,4 +38,17 @@ export function getDist() {
   if (!dist) return DEFAULT_DIST;
   if (isAbsolute(dist)) return dist;
   return resolve(dist);
+}
+
+const loadJSON = (path: string) =>
+  JSON.parse(fs.readFileSync(new URL(path, import.meta.url), "utf8"));
+
+export const PACKAGE = loadJSON(resolve("package.json"));
+
+export function setDevHost(host: string) {
+  devHost = host;
+}
+
+export function getDevHost() {
+  return devHost;
 }

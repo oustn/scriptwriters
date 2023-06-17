@@ -1,4 +1,4 @@
 export default {
-  port: 3000,
-  host: '0.0.0.0',
+  name: "示例测试脚本",
+  description: "示例测试脚本, Powered by ScriptWriter",
 }

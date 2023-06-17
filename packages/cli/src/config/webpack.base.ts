@@ -1,6 +1,9 @@
 import type { Configuration } from "webpack";
 import { resolveEntries } from "../common/resolver.js";
-import { getDist } from "../common/constant.js";
+import { getDist, getScriptwriterConfig } from "../common/constant.js";
+import { ScriptwriterPlugin } from "../plugins/scriptwriter-plugin.js";
+
+const config = getScriptwriterConfig();
 
 export const webpackBase: Configuration = {
   entry: resolveEntries,
@@ -14,6 +17,7 @@ export const webpackBase: Configuration = {
       },
     ],
   },
+
   resolve: {
     extensions: [".ts", ".js"],
   },
@@ -22,4 +26,11 @@ export const webpackBase: Configuration = {
     filename: "[name].js",
     path: getDist(),
   },
+
+  plugins: [
+    new ScriptwriterPlugin({
+      name: config.name,
+      description: config.description,
+    }),
+  ],
 };

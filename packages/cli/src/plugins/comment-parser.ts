@@ -1,0 +1,125 @@
+import { parse, tokenizers } from "comment-parser";
+
+const TASK = "task";
+const REWRITE = "rewrite";
+
+const types = [TASK, REWRITE];
+
+type MetaKey =
+  | "name"
+  | "type"
+  | "tag"
+  | "icon"
+  | "corn"
+  | "description"
+  | "host"
+  | "url"
+  | "method"
+  | "rewrite"
+  | "enable";
+
+type Meta = Record<MetaKey, string>;
+
+export class Script {
+  static create(meta: Meta, resource: string) {
+    if (meta.type === TASK) {
+      return new Task(meta, resource);
+    } else if (meta.type === REWRITE) {
+      return new Rewrite(meta, resource);
+    }
+    return new Script(meta, resource);
+  }
+
+  constructor(public meta: Meta, public resource: string) {}
+
+  isValid() {
+    return false;
+  }
+
+  format(): string {
+    if (!this.isValid()) return "";
+
+    return this.formatScript();
+  }
+
+  formatScript(): string {
+    return "";
+  }
+}
+
+export class Task extends Script {
+  constructor(public meta: Meta, public resource: string) {
+    super(meta, resource);
+  }
+
+  isValid() {
+    return !!(this.meta.corn && this.meta.tag);
+  }
+
+  formatScript(): string {
+    let record = `${this.meta.corn} ${this.resource}`;
+    if (this.meta.icon) {
+      record += `, img-url=${this.meta.icon}`;
+    }
+
+    if (this.meta.name || this.meta.tag) {
+      record += `, tag=${this.meta.name || this.meta.tag}`;
+    }
+
+    if (this.meta.enable) {
+      record += `, enable=${this.meta.enable}`;
+    }
+
+    return record;
+  }
+}
+
+export class Rewrite extends Script {
+  constructor(public meta: Meta, public resource: string) {
+    super(meta, resource);
+  }
+
+  get hosts() {
+    return Array.from(new Set(this.meta.host.split(",").map((d) => d.trim())));
+  }
+
+  isValid(): boolean {
+    return !!(this.meta.host && this.meta.url && this.meta.method);
+  }
+
+  formatScript(): string {
+    const record = `${this.meta.url} url ${this.meta.rewrite} ${this.resource}`;
+
+    if (this.hosts.length <= 0) return record;
+    return `host = ${this.hosts.join(", ")}
+
+${record}
+    `;
+  }
+}
+
+export function parseMeta(code: string, resource: string): Script | undefined {
+  const blocks = parse(code, {
+    tokenizers: [tokenizers.tag(), tokenizers.description("compact")],
+  });
+
+  if (!Array.isArray(blocks) || blocks.length === 0) {
+    return;
+  }
+
+  const scriptComment = blocks.find((item) =>
+    item.tags.some(
+      (tag) => tag.tag === "script" && types.includes(tag.description)
+    )
+  );
+  if (!scriptComment) {
+    return;
+  }
+  const meta = scriptComment.tags.reduce((prev, curr) => {
+    prev[(curr.tag === "script" ? "type" : curr.tag) as MetaKey] =
+      curr.description;
+    return prev;
+  }, {} as Record<MetaKey, string>) as Meta;
+
+  return Script.create(meta, resource);
+}

@@ -1,6 +1,6 @@
 import path from "node:path";
 import fs from "node:fs";
-import { getScriptwriterConfig, resolve } from "./constant.js";
+import { getScriptwriterConfig, resolve, ROOT } from "./constant.js";
 
 const defaultIncludes = ["scripts", "tasks"];
 
@@ -35,7 +35,7 @@ export function resolveEntries() {
     if (!fs.existsSync(entryPath)) return;
     const files = getTypescriptFiles(entryPath);
     files.forEach((file) => {
-      const relative = path.relative(entryPath, file);
+      const relative = path.relative(ROOT, file);
       const name = relative.replace(/\.ts$/, "").replace(/\//g, ".");
       result[name] = {
         import: file,
