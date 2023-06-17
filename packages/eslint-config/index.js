@@ -7,6 +7,8 @@ module.exports = {
     sourceType: "module"
   },
   rules: {
-    "import/extensions": "off"
+    "import/extensions": "off",
+    "turbo/no-undeclared-env-vars": "off",
+    "@typescript-eslint/no-non-null-assertion": "off"
   }
 };

@@ -4,6 +4,7 @@
     "module": "es6",
     "target": "es5",
     "allowJs": false,
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "moduleResolution": "NodeNext"
   }
 }

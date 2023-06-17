@@ -1,7 +1,2 @@
-/**
- * Sum numbers
- * @param args
- */
-export function sum(...args: number[]) {
-  return args.reduce((prev, curr) => prev + curr, 0);
-}
+export * from "./log";
+export * from "./store";
