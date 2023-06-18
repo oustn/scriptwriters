@@ -27,7 +27,7 @@
     "typescript": "^5.1.3"
   },
   "name": "scriptwriters",
-  "packageManager": "npm@8.19.3",
+  "packageManager": "npm@8.19.4",
   "workspaces": [
     "packages/*",
     "examples/*"
