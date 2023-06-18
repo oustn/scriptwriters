@@ -1,6 +1,6 @@
 {
   "name": "@scriptwriter/quantumult",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0",
   "license": "MIT",
   "author": "oustn",
   "main": "lib/index.js",

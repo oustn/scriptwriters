@@ -6,15 +6,17 @@
     "dev": "turbo run dev --filter=./packages/*",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,md,json}\"",
-    "postinstall": "husky install"
+    "postinstall": "husky install",
+    "release": "turbo run build && changeset version && changeset publish"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.26.1",
     "@commitlint/cli": "^17.6.5",
     "@commitlint/config-conventional": "^17.6.5",
-    "@scriptwriter/eslint-config": "*",
-    "@scriptwriter/tsconfig": "*",
     "@scriptwriter/cli": "*",
+    "@scriptwriter/eslint-config": "*",
     "@scriptwriter/quantumult": "*",
+    "@scriptwriter/tsconfig": "*",
     "@turbo/gen": "^1.9.7",
     "@types/node": "^18.16.18",
     "eslint": "^7.32.0",
