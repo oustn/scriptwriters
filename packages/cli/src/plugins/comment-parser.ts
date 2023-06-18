@@ -1,6 +1,6 @@
 import { parse, tokenizers } from "comment-parser";
 
-import { PACKAGE, getDevHost } from "../common/constant.js";
+import { PACKAGE, getScriptwriterConfig } from "../common/constant.js";
 
 const TASK = "task";
 const REWRITE = "rewrite";
@@ -52,12 +52,12 @@ export class Script {
     return `脚本名称：${this.meta.name || this.meta.tag}
 脚本作者：${PACKAGE.author?.name ?? PACKAGE.author ?? "未知"}
 更新时间：${new Date().toLocaleString()}
-脚本说明：${this.meta.description ?? ""}
-`;
+脚本说明：${this.meta.description ?? ""}`;
   }
 
   getLicense(): string {
-    return "❤️ Powered by Scriptwriter(https://github.com/oustn/scriptwriters.git)";
+    const config = getScriptwriterConfig();
+    return `${config?.license}❤️ Powered by Scriptwriter(https://github.com/oustn/scriptwriters.git)`;
   }
 }
 
