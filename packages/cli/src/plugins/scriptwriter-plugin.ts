@@ -5,7 +5,7 @@ import { parseMeta, Script, Task, Rewrite } from "./comment-parser.js";
 import { PACKAGE, getDevHost } from "../common/constant.js";
 
 const { Compilation } = webpack;
-const { ReplaceSource } = sources;
+const { ReplaceSource, ConcatSource } = sources;
 
 const PLUGIN = "ScriptwriterPlugin";
 
@@ -16,6 +16,17 @@ interface ScriptwriterPluginOptions {
   taskSubscribe?: string;
   rewriteSubscribe?: string;
 }
+
+type Cached = WeakMap<Source, { source: Source; comment: string }>;
+
+const wrapComment = (str: string) => {
+  return `/*!\n * ${str
+    .replace(/\*\//g, "* /")
+    .split("\n")
+    .join("\n * ")
+    .replace(/\s+\n/g, "\n")
+    .trimEnd()}\n */`;
+};
 
 export class ScriptwriterPlugin {
   options: ScriptwriterPluginOptions;
@@ -35,6 +46,8 @@ export class ScriptwriterPlugin {
 
   apply(compiler: Compiler) {
     const cache: Map<string, Script> = new Map();
+
+    const commentCache: Cached = new WeakMap();
 
     compiler.hooks.compilation.tap(PLUGIN, (compilation) => {
       compilation.hooks.processAssets.tap(
@@ -68,7 +81,11 @@ export class ScriptwriterPlugin {
                 if (search) {
                   replacement = `Store.create('${name}')}`;
                 } else {
-                  return old;
+                  return this.insertComment<typeof old>(
+                    old,
+                    commentCache,
+                    script
+                  );
                 }
                 const source = new ReplaceSource(old as Source);
                 const index = search.index;
@@ -77,7 +94,11 @@ export class ScriptwriterPlugin {
                   index + search[0].length - 1,
                   replacement
                 );
-                return source as typeof old;
+                return this.insertComment<typeof old>(
+                  source as typeof old,
+                  commentCache,
+                  script
+                );
               });
             }
           }
@@ -112,6 +133,18 @@ export class ScriptwriterPlugin {
         }
       );
     });
+  }
+
+  private insertComment<T>(source: T, cache: Cached, script?: Script): T {
+    if (!script || !script.isValid()) return source;
+    const comment = wrapComment(script.getComment());
+    const cached = cache.get(source as Source);
+    if (!cached || cached.comment !== comment) {
+      const newSource = new ConcatSource(comment, "\n\n", source as Source);
+      cache.set(source as Source, { source: newSource, comment });
+      return newSource as T;
+    }
+    return cached.source as T;
   }
 
   private generateTaskGallery(cache: Map<string, Script>) {

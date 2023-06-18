@@ -2,6 +2,10 @@
   "name": "base",
   "version": "0.0.0",
   "private": true,
+  "author": {
+    "name": "oustn",
+    "email": "kun.zeng.dev@gmail.com"
+  },
   "scripts": {
     "dev": "APP_ROOT_PATH=`pwd` scriptwriter-cli dev",
     "build": "APP_ROOT_PATH=`pwd` scriptwriter-cli build"

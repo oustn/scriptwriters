@@ -1,5 +1,7 @@
 import { parse, tokenizers } from "comment-parser";
 
+import { PACKAGE, getDevHost } from "../common/constant.js";
+
 const TASK = "task";
 const REWRITE = "rewrite";
 
@@ -45,6 +47,18 @@ export class Script {
   formatScript(): string {
     return "";
   }
+
+  getComment(): string {
+    return `脚本名称：${this.meta.name || this.meta.tag}
+脚本作者：${PACKAGE.author?.name ?? PACKAGE.author ?? "未知"}
+更新时间：${new Date().toLocaleString()}
+脚本说明：${this.meta.description ?? ""}
+`;
+  }
+
+  getLicense(): string {
+    return "❤️ Powered by Scriptwriter(https://github.com/oustn/scriptwriters.git)";
+  }
 }
 
 export class Task extends Script {
@@ -72,6 +86,16 @@ export class Task extends Script {
 
     return record;
   }
+
+  getComment(): string {
+    return `${super.getComment()}
+
+[task_local]
+${this.formatScript()}
+
+${super.getLicense()}
+`;
+  }
 }
 
 export class Rewrite extends Script {
@@ -91,10 +115,23 @@ export class Rewrite extends Script {
     const record = `${this.meta.url} url ${this.meta.rewrite} ${this.resource}`;
 
     if (this.hosts.length <= 0) return record;
-    return `host = ${this.hosts.join(", ")}
+    return `hostname = ${this.hosts.join(", ")}
 
 ${record}
     `;
+  }
+
+  getComment(): string {
+    return `${super.getComment()}
+
+[rewrite_local]
+${this.meta.url} url ${this.meta.rewrite} ${this.resource}
+
+[mitm]
+hostname = ${this.hosts.join(", ")}
+
+${super.getLicense()}
+`;
   }
 }
 
