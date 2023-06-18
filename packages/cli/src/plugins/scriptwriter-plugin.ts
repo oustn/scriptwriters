@@ -171,14 +171,14 @@ export class ScriptwriterPlugin {
     const records: string[] = [];
     rewrites.forEach(([file, script]) => {
       const record = script.format();
-      rewriteMap.set(file, record);
-      records.push(record);
+      rewriteMap.set(file.replace(path.extname(file), ".conf"), record);
+      records.push((script as Rewrite).formatRecord());
       (script as Rewrite).hosts.forEach((host) => hosts.add(host));
     });
     rewriteMap.set(
       this.options.rewriteSubscribe!,
       `${
-        hosts.size > 0 ? `host = ${Array.from(hosts).join(", ")}\n\n` : ""
+        hosts.size > 0 ? `hostname = ${Array.from(hosts).join(", ")}\n\n` : ""
       }${records.join("\n")}`
     );
     return rewriteMap;

@@ -2,7 +2,7 @@ import path from "node:path";
 import fs from "node:fs";
 import { getScriptwriterConfig, resolve, ROOT } from "./constant.js";
 
-const defaultIncludes = ["scripts", "tasks"];
+const defaultIncludes = ["rewrites", "tasks"];
 
 function getSourceRoot() {
   const { includes } = getScriptwriterConfig();

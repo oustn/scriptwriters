@@ -108,11 +108,15 @@ export class Rewrite extends Script {
   }
 
   isValid(): boolean {
-    return !!(this.meta.host && this.meta.url && this.meta.method);
+    return !!(this.meta.host && this.meta.url && this.meta.rewrite);
+  }
+
+  formatRecord() {
+    return `${this.meta.url} url ${this.meta.rewrite} ${this.resource}`;
   }
 
   formatScript(): string {
-    const record = `${this.meta.url} url ${this.meta.rewrite} ${this.resource}`;
+    const record = this.formatRecord();
 
     if (this.hosts.length <= 0) return record;
     return `hostname = ${this.hosts.join(", ")}
