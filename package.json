@@ -7,7 +7,7 @@
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,md,json}\"",
     "postinstall": "husky install",
-    "release": "turbo run build && changeset version && changeset publish"
+    "release": "turbo run build --filter=./packages/* && changeset version && changeset publish"
   },
   "devDependencies": {
     "@changesets/cli": "^2.26.1",
