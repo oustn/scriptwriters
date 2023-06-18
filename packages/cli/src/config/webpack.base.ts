@@ -31,6 +31,9 @@ export const webpackBase: Configuration = {
     new ScriptwriterPlugin({
       name: config.name,
       description: config.description,
+      host: config.host || "/",
+      taskSubscribe: config.taskSubscribe || "tasks.json",
+      rewriteSubscribe: config.rewriteSubscribe || "rewrites.conf",
     }),
   ],
 };
