@@ -2,7 +2,7 @@
   "version": "0.0.0-development",
   "private": true,
   "scripts": {
-    "build": "turbo run build --ignore=\"examples/**/*\"",
+    "build": "turbo run build --filter=./packages/*",
     "dev": "turbo run dev --filter=./packages/*",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,md,json}\"",
