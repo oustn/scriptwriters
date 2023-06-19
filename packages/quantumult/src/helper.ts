@@ -1,4 +1,6 @@
-export function done(returnValue: unknown) {
+import { logger } from "./log";
+
+export function done(returnValue?: unknown) {
   $done(returnValue);
 }
 
@@ -21,12 +23,14 @@ export function call(fn: () => unknown) {
           $done(data);
         })
         .catch((error) => {
-          throw error;
+          logger.error(error);
+          $done();
         });
     } else {
       $done(result);
     }
   } catch (error) {
-    throw error;
+    logger.error(error);
+    $done();
   }
 }
