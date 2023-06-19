@@ -1,6 +1,20 @@
 {
   "version": "0.0.0-development",
+  "description": "A simple tools for write and test quantumult scripts easier",
   "private": true,
+  "license": "MIT",
+  "author": {
+    "name": "oustn",
+    "email": "oustnzeng@gmail.com"
+  },
+  "keywords": [
+    "Quantumult",
+    "Quantumult x",
+    "rewrite",
+    "task",
+    "javascript",
+    "typescript"
+  ],
   "scripts": {
     "build": "turbo run build --filter=./packages/*",
     "dev": "turbo run dev --filter=./packages/*",
