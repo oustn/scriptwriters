@@ -10,14 +10,23 @@ const noop = () => {
 
 type MethodName = log.LogLevelNames | "log";
 
-class Timestamp {
-  now = new Date();
+const ICON_MAP: Record<MethodName, string> = {
+  trace: "🔍",
+  debug: "🐛",
+  log: "🐛",
+  info: "💡",
+  warn: "⚠️",
+  error: "💣",
+};
 
-  toString(): string {
-    const timestamp = this.now.toLocaleTimeString("zh", { hour12: false });
-    return `[${timestamp}]`;
-  }
-}
+// class Timestamp {
+//   now = new Date();
+//
+//   toString(): string {
+//     const timestamp = this.now.toLocaleTimeString("zh", { hour12: false });
+//     return `[${timestamp}]`;
+//   }
+// }
 
 export function stringify(something: unknown): string {
   if (
@@ -68,8 +77,9 @@ class ScriptwriterConsole {
   }
 
   private getStub(methodName: MethodName) {
-    const timestamp = new Timestamp();
-    return `${timestamp.toString()}[${methodName.toUpperCase().slice(0, 1)}]:`;
+    // const timestamp = new Timestamp();
+    // return `${timestamp.toString()}[${methodName.toUpperCase().slice(0, 1)}]:`;
+    return ICON_MAP[methodName];
   }
 
   private transformMessage(...message: unknown[]): string {
