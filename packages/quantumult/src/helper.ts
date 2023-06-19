@@ -1,7 +1,13 @@
 import { logger } from "./log";
 
 export function done(returnValue?: unknown) {
+  logger.info("🎉🎉🎉🎉🎉");
   $done(returnValue);
+}
+
+export function panic(message: string) {
+  logger.error("❌", message);
+  $done();
 }
 
 export function wait(duration = 1): Promise<void> {
@@ -12,7 +18,7 @@ export function wait(duration = 1): Promise<void> {
 
 export function call(fn: () => unknown) {
   if (typeof fn !== "function") {
-    throw new Error("Task is not a function");
+    panic("Task is not a function");
   }
 
   try {
@@ -20,17 +26,23 @@ export function call(fn: () => unknown) {
     if (result instanceof Promise) {
       result
         .then((data) => {
-          $done(data);
+          done(data);
         })
         .catch((error) => {
-          logger.error(error);
-          $done();
+          if (error instanceof Error) {
+            panic(error.message);
+            return;
+          }
+          panic(error as string);
         });
     } else {
-      $done(result);
+      done(result);
     }
   } catch (error) {
-    logger.error(error);
-    $done();
+    if (error instanceof Error) {
+      panic(error.message);
+      return;
+    }
+    panic(error as string);
   }
 }
