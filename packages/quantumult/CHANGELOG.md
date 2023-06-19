@@ -1,5 +1,11 @@
 # @scriptwriter/quantumult
 
+## 1.0.2
+
+### Patch Changes
+
+- 02f2954: 修复发布错误
+
 ## 1.0.1
 
 ### Patch Changes
