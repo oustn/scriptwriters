@@ -1,5 +1,11 @@
 # @scriptwriter/quantumult
 
+## 1.0.3
+
+### Patch Changes
+
+- 384e921: 优化 logger 输出，移除时间戳，新增 icon 标识
+
 ## 1.0.2
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @scriptwriter/cli
 
+## 1.0.3
+
+### Patch Changes
+
+- a0c471c: support static assets.
+
 ## 1.0.2
 
 ### Patch Changes
