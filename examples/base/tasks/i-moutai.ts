@@ -2,7 +2,7 @@
  * @script task
  * @corn 0 12 * * 1
  * @tag 获取茅台积分
- * @icon https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/YouTube_Letter.png
+ * @icon /assets/icons/mt.png
  */
 
 import { fetch, logger, call, notify } from "@scriptwriter/quantumult";
