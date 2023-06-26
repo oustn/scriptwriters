@@ -13,6 +13,9 @@ export const ROOT = appRoot.path;
 export const resolve = appRoot.resolve;
 
 export const CONFIG_FILE = join(ROOT, "scriptwriter.config.mjs");
+
+export const ASSETS = join(ROOT, "assets");
+
 export const PACKAGE_JSON_FILE = join(ROOT, "package.json");
 
 export const DEFAULT_DIST = join(ROOT, "dist");
@@ -33,11 +36,19 @@ export function getScriptwriterConfig() {
   return scriptwriterConfig;
 }
 
-export function getDist() {
+export function getDist(subPath?: string) {
+  let rootDist;
+
   const { dist } = getScriptwriterConfig();
-  if (!dist) return DEFAULT_DIST;
-  if (isAbsolute(dist)) return dist;
-  return resolve(dist);
+  if (!dist) {
+    rootDist = DEFAULT_DIST;
+  } else if (isAbsolute(dist)) {
+    rootDist = dist;
+  } else {
+    rootDist = resolve(dist);
+  }
+  if (!subPath) return rootDist;
+  return join(rootDist, subPath);
 }
 
 const loadJSON = (path: string) =>

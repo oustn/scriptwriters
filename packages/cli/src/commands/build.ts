@@ -1,10 +1,10 @@
-import { remove } from "fs-extra";
+import { remove, copy, exists } from "fs-extra";
 import { consola } from "consola";
 import { execa } from "execa";
 
 import { setNodeEnv } from "../common/helper.js";
 import { compile } from "../compiler/compile.js";
-import { getDist } from "../common/constant.js";
+import { getDist, ASSETS } from "../common/constant.js";
 
 async function clean() {
   await remove(getDist());
@@ -32,4 +32,7 @@ export async function build() {
   await clean();
   await installDependencies();
   await compile();
+  if (await exists(ASSETS)) {
+    await copy(ASSETS, getDist("assets"));
+  }
 }

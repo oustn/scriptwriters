@@ -30,3 +30,10 @@ export function getWebpackConfig(defaultConfig: Configuration) {
   }
   return defaultConfig;
 }
+
+export function urlJoin(host: string, url: string) {
+  if (/^https?:\/\//.test(url)) {
+    return url;
+  }
+  return `${host!.replace(/\/$/, "")}/${url.replace(/^\//, "")}`;
+}

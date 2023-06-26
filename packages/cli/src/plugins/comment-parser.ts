@@ -1,6 +1,7 @@
 import { parse, tokenizers } from "comment-parser";
 
 import { PACKAGE, getScriptwriterConfig } from "../common/constant.js";
+import { urlJoin } from "../common/helper.js";
 
 const TASK = "task";
 const REWRITE = "rewrite";
@@ -139,7 +140,11 @@ ${super.getLicense()}
   }
 }
 
-export function parseMeta(code: string, resource: string): Script | undefined {
+export function parseMeta(
+  code: string,
+  resource: string,
+  host: string
+): Script | undefined {
   const blocks = parse(code, {
     tokenizers: [tokenizers.tag(), tokenizers.description("compact")],
   });
@@ -159,6 +164,9 @@ export function parseMeta(code: string, resource: string): Script | undefined {
   const meta = scriptComment.tags.reduce((prev, curr) => {
     prev[(curr.tag === "script" ? "type" : curr.tag) as MetaKey] =
       curr.description;
+    if (curr.tag === "icon") {
+      prev["icon"] = urlJoin(host, prev.icon);
+    }
     return prev;
   }, {} as Record<MetaKey, string>) as Meta;
 

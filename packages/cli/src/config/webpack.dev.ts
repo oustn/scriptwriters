@@ -4,7 +4,7 @@ import WebpackBar from "webpackbar";
 import type { Configuration } from "webpack";
 
 import { webpackBase } from "./webpack.base.js";
-import { GREEN } from "../common/constant.js";
+import { GREEN, ASSETS } from "../common/constant.js";
 import { getWebpackConfig } from "../common/helper.js";
 import { WebpackConfig } from "../common/types";
 
@@ -29,6 +29,10 @@ function getDevBaseConfig(): Configuration {
       hot: false,
       liveReload: false,
       webSocketServer: false,
+      static: {
+        directory: ASSETS,
+        publicPath: "/assets",
+      },
     },
 
     plugins: [

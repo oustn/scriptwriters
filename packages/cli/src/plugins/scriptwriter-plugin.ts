@@ -3,6 +3,7 @@ import path from "node:path";
 import sources, { Source } from "webpack-sources";
 import { parseMeta, Script, Task, Rewrite } from "./comment-parser.js";
 import { PACKAGE, getDevHost } from "../common/constant.js";
+import { urlJoin } from "../common/helper.js";
 
 const { Compilation } = webpack;
 const { ReplaceSource, ConcatSource } = sources;
@@ -39,9 +40,13 @@ export class ScriptwriterPlugin {
     };
   }
 
+  private getHost(dev: boolean) {
+    return dev || !this.options.host ? getDevHost() : this.options.host;
+  }
+
   private getResource(file: string, dev: boolean) {
-    const host = dev || !this.options.host ? getDevHost() : this.options.host;
-    return `${host!.replace(/\/$/, "")}/${file}`;
+    const host = this.getHost(dev);
+    return urlJoin(host, file);
   }
 
   apply(compiler: Compiler) {
@@ -57,6 +62,8 @@ export class ScriptwriterPlugin {
         },
         () => {
           const isDev = compiler.options.mode === "development";
+          const host = this.getHost(isDev);
+
           for (const chunk of compilation.chunks) {
             if (!chunk.canBeInitial()) {
               continue;
@@ -71,7 +78,11 @@ export class ScriptwriterPlugin {
               compilation.updateAsset(file, (old) => {
                 const code = old.source().toString();
 
-                const script = parseMeta(code, this.getResource(file, isDev));
+                const script = parseMeta(
+                  code,
+                  this.getResource(file, isDev),
+                  host
+                );
                 if (script) {
                   cache.set(file, script);
                 }
