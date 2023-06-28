@@ -3,7 +3,8 @@
   "compilerOptions": {
     "target": "ES2019",
     "outDir": "./lib",
-    "declaration": true
+    "declaration": true,
+    "jsx": "react"
   },
   "include": ["src/**/*"]
 }

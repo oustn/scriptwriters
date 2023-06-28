@@ -121,7 +121,8 @@ export class ScriptwriterPlugin {
           name: PLUGIN,
           stage: Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE_SIZE,
         },
-        () => {
+        (assets) => {
+          if (Object.keys(assets).length === 0) return;
           const taskMeta = JSON.stringify(
             this.generateTaskGallery(cache),
             null,

@@ -1,8 +1,8 @@
-import { join, isAbsolute } from "node:path";
+import { join, isAbsolute, dirname, resolve as pathResolve } from "node:path";
 import process from "node:process";
 
 import appRoot from "app-root-path";
-import { pathToFileURL } from "url";
+import { pathToFileURL, fileURLToPath } from "url";
 import fs from "node:fs";
 
 let devHost = "";
@@ -21,6 +21,8 @@ export const PACKAGE_JSON_FILE = join(ROOT, "package.json");
 export const DEFAULT_DIST = join(ROOT, "dist");
 
 export const GREEN = "#07c160";
+
+export const CLI_ROOT = pathResolve(getDirName(import.meta.url), "..");
 
 async function getScriptwriterConfigAsync() {
   try {
@@ -62,4 +64,9 @@ export function setDevHost(host: string) {
 
 export function getDevHost() {
   return devHost;
+}
+
+export function getDirName(moduleUrl: string) {
+  const filename = fileURLToPath(moduleUrl);
+  return dirname(filename);
 }
