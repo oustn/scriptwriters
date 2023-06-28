@@ -1,11 +1,13 @@
 import { logger } from "./log";
 
 export function done(returnValue?: unknown) {
+  logger.info();
   logger.info("🎉🎉🎉🎉🎉");
   $done(returnValue);
 }
 
 export function panic(message: string) {
+  logger.info();
   logger.error("❌", message);
   $done();
 }

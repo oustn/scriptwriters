@@ -79,7 +79,8 @@ class ScriptwriterConsole {
   private getStub(methodName: MethodName) {
     // const timestamp = new Timestamp();
     // return `${timestamp.toString()}[${methodName.toUpperCase().slice(0, 1)}]:`;
-    return ICON_MAP[methodName];
+    // return ICON_MAP[methodName];
+    return "";
   }
 
   private transformMessage(...message: unknown[]): string {

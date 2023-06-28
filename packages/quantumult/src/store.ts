@@ -1,4 +1,3 @@
-import { logger } from "./log";
 import { DEFAULT_KEY, INTERNAL_KEY } from "./constant";
 
 interface InternalData {
@@ -11,22 +10,22 @@ function parse<T>(value: string): T | undefined {
   try {
     return JSON.parse(value);
   } catch (e) {
-    logger.log(`Error parsing JSON string: ${value}`);
+    // logger.log(`Error parsing JSON string: ${value}`);
     return undefined;
   }
 }
 
 export class Store {
   public static create(name?: string): Store {
-    logger.log(`Creating store with name: ${name ?? DEFAULT_KEY}`);
+    // logger.log(`Creating store with name: ${name ?? DEFAULT_KEY}`);
     return new Store(name ?? DEFAULT_KEY);
   }
 
   public static get<T>(key: string, defaultValue?: T): T | typeof defaultValue {
-    logger.log(`Getting global value for key: ${key}`);
+    // logger.log(`Getting global value for key: ${key}`);
     const keys = Store.internalGetKeys();
     if (!keys.includes(key)) {
-      logger.log(`Global value for key ${key} not found`);
+      // logger.log(`Global value for key ${key} not found`);
       return defaultValue;
     }
     const data = $prefs.valueForKey(key);
@@ -38,20 +37,20 @@ export class Store {
   }
 
   public static set(key: string, value: unknown) {
-    logger.log(`Setting global value for key: ${key}`);
+    // logger.log(`Setting global value for key: ${key}`);
     $prefs.setValueForKey(JSON.stringify(value), key);
     Store.internalSetKey(key);
   }
 
   public static remove(key: string) {
-    logger.log(`Removing global value for key: ${key}`);
+    // logger.log(`Removing global value for key: ${key}`);
     $prefs.removeValueForKey(key);
     Store.internalRemoveKey(key);
   }
 
   public static clear() {
     const keys = Store.internalGetKeys();
-    logger.log("Clearing global values: ", keys);
+    // logger.log("Clearing global values: ", keys);
     keys.forEach((key) => {
       $prefs.removeValueForKey(key);
     });
@@ -59,7 +58,7 @@ export class Store {
   }
 
   public static get entries(): Array<[key: string, value: unknown]> {
-    logger.log("Getting global entries");
+    // logger.log("Getting global entries");
     const keys = Store.internalGetKeys();
     return keys.map((key) => {
       return [key, Store.get(key)];
@@ -67,7 +66,7 @@ export class Store {
   }
 
   private static getInternalData(): InternalData {
-    logger.log("Getting internal data");
+    // logger.log("Getting internal data");
     const internalData = $prefs.valueForKey(INTERNAL_KEY);
     if (!internalData)
       return {
@@ -120,27 +119,27 @@ export class Store {
   }
 
   get<T>(key: string, defaultValue?: T): T | undefined {
-    logger.log(`Getting value for key: ${key} from store: ${this.name}`);
+    // logger.log(`Getting value for key: ${key} from store: ${this.name}`);
     const data = Store.get<StoreValue<T>>(this.key, {})!;
     return data[key] ?? defaultValue;
   }
 
   set<T>(key: string, value: T) {
-    logger.log(`Setting value for key: ${key} from store: ${this.name}`);
+    // logger.log(`Setting value for key: ${key} from store: ${this.name}`);
     const data = Store.get<StoreValue<T>>(this.key, {})!;
     data[key] = value;
     Store.set(this.key, data);
   }
 
   remove(key: string) {
-    logger.log(`Removing value for key: ${key} from store: ${this.name}`);
+    // logger.log(`Removing value for key: ${key} from store: ${this.name}`);
     const data = Store.get<StoreValue<unknown>>(this.key, {})!;
     delete data[key];
     Store.set(this.key, data);
   }
 
   clear() {
-    logger.log(`Clearing store: ${this.name}`);
+    // logger.log(`Clearing store: ${this.name}`);
     Store.remove(this.key);
   }
 }
