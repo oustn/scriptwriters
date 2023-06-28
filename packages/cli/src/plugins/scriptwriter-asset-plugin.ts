@@ -87,7 +87,6 @@ export class ScriptwriterAssetPlugin {
     });
 
     compiler.hooks.make.tapAsync(PLUGIN, async (compilation, callback) => {
-      const webpackInstance = compiler.webpack;
       const { options } = this;
       const outputOptions = {
         filename: "[name].js",

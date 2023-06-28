@@ -16,7 +16,7 @@ async function installDependencies() {
   try {
     const manager = "npm";
 
-    await execa(manager, ["install", "--prod=false"], {
+    await execa(manager, ["install", "--include=dev"], {
       stdio: "inherit",
     });
 
@@ -31,7 +31,12 @@ export async function build() {
   setNodeEnv("production");
   await clean();
   await installDependencies();
-  await compile();
+  try {
+    await compile();
+  } catch (e) {
+    consola.error(e);
+    process.exit(1);
+  }
   if (await exists(ASSETS)) {
     await copy(ASSETS, getDist("assets"));
   }

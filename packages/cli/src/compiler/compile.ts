@@ -8,7 +8,7 @@ export async function compile() {
 
     webpack(config, (err, stats) => {
       if (err || stats?.hasErrors()) {
-        reject();
+        reject(err?.message ?? stats?.toString());
       } else {
         resolve(null);
       }

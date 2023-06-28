@@ -8,7 +8,7 @@ export function getProdConfig(): WebpackConfig {
   return getWebpackConfig(
     merge(getDevConfig(), {
       mode: "production",
-      stats: "none",
+      // stats: "none",
       optimization: {
         minimize: true,
         minimizer: [
