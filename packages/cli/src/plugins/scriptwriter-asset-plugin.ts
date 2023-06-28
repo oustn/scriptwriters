@@ -84,6 +84,7 @@ export class ScriptwriterAssetPlugin {
     });
 
     compiler.hooks.make.tapAsync(PLUGIN, async (compilation, callback) => {
+      const webpackInstance = compiler.webpack;
       const { options } = this;
       const outputOptions = {
         filename: "[name].js",
@@ -103,7 +104,6 @@ export class ScriptwriterAssetPlugin {
 
       const entries = this.resolveEntries(options.includes, compiler.context);
 
-      const webpack = compilation.compiler.webpack;
       const EntryPlugin = webpack.EntryPlugin;
 
       entries.forEach((entry) => {
@@ -112,6 +112,10 @@ export class ScriptwriterAssetPlugin {
           filename: entry.filename,
         }).apply(childCompiler);
       });
+
+      new webpackInstance.optimize.RuntimeChunkPlugin(false).apply(
+        childCompiler
+      );
 
       compilation.hooks.additionalAssets.tapAsync(
         PLUGIN,

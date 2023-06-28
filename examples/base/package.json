@@ -11,7 +11,8 @@
     "build": "APP_ROOT_PATH=`pwd` scriptwriter-cli build"
   },
   "dependencies": {
-    "@scriptwriter/quantumult": "*"
+    "@scriptwriter/quantumult": "*",
+    "express": "^4.18.2"
   },
   "devDependencies": {
     "@scriptwriter/cli": "*",
