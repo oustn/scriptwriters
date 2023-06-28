@@ -1,5 +1,4 @@
 ---
-"base": patch
 "@scriptwriter/cli": patch
 ---
 
