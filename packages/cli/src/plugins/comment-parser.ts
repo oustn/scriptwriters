@@ -9,9 +9,9 @@ const REWRITE = "rewrite";
 const types = [TASK, REWRITE];
 
 type MetaKey =
-  | "name"
   | "type"
   | "tag"
+  | "title"
   | "icon"
   | "corn"
   | "description"
@@ -19,7 +19,8 @@ type MetaKey =
   | "url"
   | "method"
   | "rewrite"
-  | "enable";
+  | "enable"
+  | "version";
 
 type Meta = Record<MetaKey, string>;
 
@@ -50,15 +51,18 @@ export class Script {
   }
 
   getComment(): string {
-    return `脚本名称：${this.meta.name || this.meta.tag}
-脚本作者：${PACKAGE.author?.name ?? PACKAGE.author ?? "未知"}
+    const config = getScriptwriterConfig();
+
+    return `脚本名称：${this.meta.title || this.meta.tag}
+脚本作者：${config.author ?? PACKAGE.author?.name ?? PACKAGE.author ?? "匿名"}
+脚本版本：${this.meta.version || "1.0.0"}
 更新时间：${new Date().toLocaleString()}
 脚本说明：${this.meta.description ?? ""}`;
   }
 
   getLicense(): string {
     const config = getScriptwriterConfig();
-    return `${config?.license}❤️ Powered by Scriptwriter(https://github.com/oustn/scriptwriters.git)`;
+    return `${config?.license}\n❤️ Powered by Scriptwriter(https://github.com/oustn/scriptwriters.git)`;
   }
 }
 
@@ -77,8 +81,9 @@ export class Task extends Script {
       record += `, img-url=${this.meta.icon}`;
     }
 
-    if (this.meta.name || this.meta.tag) {
-      record += `, tag=${this.meta.name || this.meta.tag}`;
+    const tag = this.meta.tag || this.meta.title;
+    if (tag) {
+      record += `, tag=${tag}`;
     }
 
     if (this.meta.enable) {

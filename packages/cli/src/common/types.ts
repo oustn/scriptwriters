@@ -6,3 +6,9 @@ export type WebpackConfig = Webpack.Configuration & {
 };
 
 export type NodeEnv = "production" | "development" | "test";
+
+export interface Entry {
+  id: string;
+  import: string;
+  filename: string;
+}

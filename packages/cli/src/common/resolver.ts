@@ -12,7 +12,7 @@ function getSourceRoot() {
   return includes ? [includes] : defaultIncludes;
 }
 
-function getTypescriptFiles(dir: string) {
+export function getTypescriptFiles(dir: string) {
   const files: string[] = [];
   const list = fs.readdirSync(dir);
   list.forEach((file) => {
@@ -28,29 +28,29 @@ function getTypescriptFiles(dir: string) {
 }
 
 export function resolveEntries() {
-  const result: Record<string, { import: string; filename: string }> = {
+  const result: Record<string, { import: string; filename?: string }> = {
     app: resolveViews(),
   };
 
-  const sources = getSourceRoot();
-  sources.forEach((entry) => {
-    const entryPath = path.isAbsolute(entry) ? entry : resolve(entry);
-    if (!fs.existsSync(entryPath)) return;
-    const files = getTypescriptFiles(entryPath);
-    files.forEach((file) => {
-      const relative = path.relative(ROOT, file);
-      const name = relative.replace(/\.ts$/, "").replace(/\//g, ".");
-      result[name] = {
-        import: file,
-        filename: `${entry}/[name].js`,
-      };
-    });
-  });
-  if (Object.keys(result).length === 0) {
-    throw new Error(
-      "No entry found. Please check your scriptwriter.config.mjs"
-    );
-  }
+  // const sources = getSourceRoot();
+  // sources.forEach((entry) => {
+  //   const entryPath = path.isAbsolute(entry) ? entry : resolve(entry);
+  //   if (!fs.existsSync(entryPath)) return;
+  //   const files = getTypescriptFiles(entryPath);
+  //   files.forEach((file) => {
+  //     const relative = path.relative(ROOT, file);
+  //     const name = relative.replace(/\.ts$/, "").replace(/\//g, ".");
+  //     result[name] = {
+  //       import: file,
+  //       filename: `${entry}/[name].js`,
+  //     };
+  //   });
+  // });
+  // if (Object.keys(result).length === 0) {
+  //   throw new Error(
+  //     "No entry found. Please check your scriptwriter.config.mjs"
+  //   );
+  // }
   return result;
 }
 
@@ -58,6 +58,5 @@ export function resolveViews() {
   const entry = path.resolve(CLI_ROOT, "views/app.js");
   return {
     import: entry,
-    filename: "js/app.js",
   };
 }

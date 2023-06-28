@@ -28,9 +28,9 @@ function getDevBaseConfig(): Configuration {
       headers: {
         "Cache-Control": "no-store",
       },
-      hot: false,
-      liveReload: false,
-      webSocketServer: false,
+      // hot: false,
+      // liveReload: false,
+      // webSocketServer: false,
       static: {
         directory: ASSETS,
         publicPath: "/assets",
@@ -50,6 +50,12 @@ function getDevBaseConfig(): Configuration {
         chunks: ["app"],
       }),
     ],
+
+    optimization: {
+      splitChunks: {
+        chunks: "all",
+      },
+    },
   });
 }
 

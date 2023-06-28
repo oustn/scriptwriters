@@ -3,6 +3,7 @@
  * @corn 0 12 * * 1
  * @tag 获取茅台积分
  * @icon /assets/icons/mt.png
+ * @description 通过重写获取茅台的 token
  */
 
 import { fetch, logger, call, notify } from "@scriptwriter/quantumult";

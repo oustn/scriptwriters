@@ -1,7 +1,7 @@
 import type { Configuration } from "webpack";
 import { resolveEntries } from "../common/resolver.js";
 import { getDist, getScriptwriterConfig } from "../common/constant.js";
-import { ScriptwriterPlugin } from "../plugins/scriptwriter-plugin.js";
+import { ScriptwriterAssetPlugin } from "../plugins/scriptwriter-asset-plugin.js";
 
 const config = getScriptwriterConfig();
 
@@ -19,21 +19,18 @@ export const webpackBase: Configuration = {
   },
 
   resolve: {
-    extensions: [".ts", ".js"],
+    extensions: [".ts", ".js", ".tsx"],
   },
 
   output: {
-    filename: "[name].js",
+    filename: "static/js/[name].[contenthash].js",
     path: getDist(),
+    chunkFilename: `static/js/[name].[contenthash].js`,
   },
 
   plugins: [
-    new ScriptwriterPlugin({
-      name: config.name,
-      description: config.description,
-      host: config.host || "/",
-      taskSubscribe: config.taskSubscribe || "tasks.json",
-      rewriteSubscribe: config.rewriteSubscribe || "rewrites.conf",
+    new ScriptwriterAssetPlugin({
+      ...config,
     }),
   ],
 };
