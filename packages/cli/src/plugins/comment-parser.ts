@@ -182,5 +182,9 @@ export function parseMeta(
     return prev;
   }, {} as Record<MetaKey, string>) as Meta;
 
+  if (scriptComment.description) {
+    meta.title = scriptComment.description;
+  }
+
   return Script.create(meta, resource);
 }
