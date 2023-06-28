@@ -2,6 +2,9 @@ import path from "node:path";
 import fs from "fs-extra";
 import type { Compiler, Compilation } from "webpack";
 import webpack from "webpack";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import FlagDependencyUsagePlugin from "webpack/lib/FlagDependencyUsagePlugin.js";
 import sources, { Source } from "webpack-sources";
 import deepExtend from "deep-extend";
 
@@ -113,9 +116,7 @@ export class ScriptwriterAssetPlugin {
         }).apply(childCompiler);
       });
 
-      new webpackInstance.optimize.RuntimeChunkPlugin(false).apply(
-        childCompiler
-      );
+      new FlagDependencyUsagePlugin(true).apply(childCompiler);
 
       compilation.hooks.additionalAssets.tapAsync(
         PLUGIN,
