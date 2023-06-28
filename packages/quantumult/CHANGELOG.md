@@ -1,5 +1,12 @@
 # @scriptwriter/quantumult
 
+## 1.0.4
+
+### Patch Changes
+
+- e9ec4ad: remove debug info
+- e12c764: quantumult lib support side-effects
+
 ## 1.0.3
 
 ### Patch Changes
