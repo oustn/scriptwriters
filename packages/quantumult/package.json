@@ -8,6 +8,7 @@
   "files": [
     "lib"
   ],
+  "sideEffects": false,
   "scripts": {
     "dev": "tsc --watch",
     "prebuild": "rm -rf lib",
