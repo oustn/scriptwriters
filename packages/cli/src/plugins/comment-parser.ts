@@ -8,6 +8,9 @@ const REWRITE = "rewrite";
 
 const types = [TASK, REWRITE];
 
+const CORN_REG =
+  /^(\*|[0-5]?\d)(\/[0-5]?\d)?(\s+(\*|[01]?\d|2[0-3])(\/[01]?\d|2[0-3])?){4}$/;
+
 type MetaKey =
   | "type"
   | "tag"
@@ -95,7 +98,11 @@ export class Task extends Script {
 
   getComment(): string {
     return `${super.getComment()}
-
+${
+  CORN_REG.test(this.meta.corn)
+    ? `\nhttps://crontab.guru/#${this.meta.corn.replace(/\s/g, "_")}\n`
+    : ""
+}
 [task_local]
 ${this.formatScript()}
 
