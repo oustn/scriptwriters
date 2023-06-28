@@ -1,5 +1,13 @@
 # @scriptwriter/cli
 
+## 1.0.4
+
+### Patch Changes
+
+- 052405c: comment parse support description as title
+- a423e00: change compile scripts with child compiler and support web
+- 7588e11: cron expression add comment
+
 ## 1.0.3
 
 ### Patch Changes
