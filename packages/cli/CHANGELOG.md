@@ -1,5 +1,11 @@
 # @scriptwriter/cli
 
+## 1.0.5
+
+### Patch Changes
+
+- d047ceb: support custom comment and copy files
+
 ## 1.0.4
 
 ### Patch Changes
