@@ -23,9 +23,10 @@ type MetaKey =
   | "method"
   | "rewrite"
   | "enable"
-  | "version";
+  | "version"
+  | "comment";
 
-type Meta = Record<MetaKey, string>;
+type Meta = Record<MetaKey, string | string[]>;
 
 export class Script {
   static create(meta: Meta, resource: string) {
@@ -56,11 +57,16 @@ export class Script {
   getComment(): string {
     const config = getScriptwriterConfig();
 
+    const customComment =
+      Array.isArray(this.meta.comment) && this.meta.comment.length > 0
+        ? `\n${this.meta.comment.join("\n")}`
+        : "";
+
     return `脚本名称：${this.meta.title || this.meta.tag}
 脚本作者：${config.author ?? PACKAGE.author?.name ?? PACKAGE.author ?? "匿名"}
 脚本版本：${this.meta.version || "1.0.0"}
 更新时间：${new Date().toLocaleString()}
-脚本说明：${this.meta.description ?? ""}`;
+脚本说明：${this.meta.description ?? ""}${customComment}`;
   }
 
   getLicense(): string {
@@ -99,8 +105,11 @@ export class Task extends Script {
   getComment(): string {
     return `${super.getComment()}
 ${
-  CORN_REG.test(this.meta.corn)
-    ? `\nhttps://crontab.guru/#${this.meta.corn.replace(/\s/g, "_")}\n`
+  CORN_REG.test(this.meta.corn as string)
+    ? `\nhttps://crontab.guru/#${(this.meta.corn as string).replace(
+        /\s/g,
+        "_"
+      )}\n`
     : ""
 }
 [task_local]
@@ -117,7 +126,9 @@ export class Rewrite extends Script {
   }
 
   get hosts() {
-    return Array.from(new Set(this.meta.host.split(",").map((d) => d.trim())));
+    return Array.from(
+      new Set((this.meta.host as string).split(",").map((d) => d.trim()))
+    );
   }
 
   isValid(): boolean {
@@ -174,13 +185,22 @@ export function parseMeta(
     return;
   }
   const meta = scriptComment.tags.reduce((prev, curr) => {
+    const key = curr.tag === "script" ? "type" : (curr.tag as MetaKey);
+    if (Array.isArray(prev[key])) {
+      (prev[key] as string[]).push(curr.description);
+      return prev;
+    }
     prev[(curr.tag === "script" ? "type" : curr.tag) as MetaKey] =
       curr.description;
     if (curr.tag === "icon") {
-      prev["icon"] = urlJoin(host, prev.icon);
+      prev["icon"] = urlJoin(host, prev.icon as string);
+    } else if (curr.tag === "comment") {
+      if (!Array.isArray(prev["comment"])) {
+        prev["comment"] = [prev["comment"]];
+      }
     }
     return prev;
-  }, {} as Record<MetaKey, string>) as Meta;
+  }, {} as Meta) as Meta;
 
   if (scriptComment.description) {
     meta.title = scriptComment.description;
