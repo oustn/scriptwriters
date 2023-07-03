@@ -19,7 +19,7 @@ export const webpackBase: Configuration = {
   },
 
   resolve: {
-    extensions: [".ts", ".js", ".tsx"],
+    extensions: [".ts", ".js", ".tsx", ".css", ".scss"],
   },
 
   output: {

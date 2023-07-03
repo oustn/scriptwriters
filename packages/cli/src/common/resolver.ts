@@ -29,7 +29,7 @@ export function getTypescriptFiles(dir: string) {
 
 export function resolveEntries() {
   const result: Record<string, { import: string; filename?: string }> = {
-    app: resolveViews(),
+    main: resolveViews(),
   };
 
   // const sources = getSourceRoot();
@@ -55,7 +55,7 @@ export function resolveEntries() {
 }
 
 export function resolveViews() {
-  const entry = path.resolve(CLI_ROOT, "views/app.js");
+  const entry = path.resolve(CLI_ROOT, "views/main.js");
   return {
     import: entry,
   };
