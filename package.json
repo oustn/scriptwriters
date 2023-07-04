@@ -60,6 +60,6 @@
     "url": "https://github.com/oustn/scriptwriters.git"
   },
   "engines": {
-    "node": ">= 18"
+    "node": ">= 18.10"
   }
 }
