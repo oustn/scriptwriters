@@ -2,7 +2,14 @@
 <module type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
-    <content url="file://$MODULE_DIR$" />
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/examples/base/.turbo" />
+      <excludeFolder url="file://$MODULE_DIR$/examples/base/dist" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/cli/.turbo" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/cli/lib" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/quantumult/.turbo" />
+      <excludeFolder url="file://$MODULE_DIR$/packages/quantumult/lib" />
+    </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
