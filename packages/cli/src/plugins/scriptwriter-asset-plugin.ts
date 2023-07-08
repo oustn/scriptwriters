@@ -65,7 +65,7 @@ export class ScriptwriterAssetPlugin {
     this.options = deepExtend(
       {},
       ScriptwriterAssetPlugin.defaultOptions,
-      options || {}
+      options || {},
     );
   }
 
@@ -82,7 +82,7 @@ export class ScriptwriterAssetPlugin {
 
       this.options.includes = this.resolveIncludes(
         options.includes,
-        compiler.context
+        compiler.context,
       );
     });
 
@@ -95,7 +95,7 @@ export class ScriptwriterAssetPlugin {
 
       const childCompiler = compilation.createChildCompiler(
         PLUGIN,
-        outputOptions
+        outputOptions,
       );
 
       childCompiler.context = compiler.context;
@@ -103,6 +103,8 @@ export class ScriptwriterAssetPlugin {
       childCompiler.outputFileSystem = compiler.outputFileSystem;
 
       childCompiler.hooks.afterPlugins.call(childCompiler);
+
+      cache.clear();
 
       const entries = this.resolveEntries(options.includes, compiler.context);
 
@@ -137,7 +139,7 @@ export class ScriptwriterAssetPlugin {
                   for (const file of chunk.files) {
                     const name = `${PACKAGE.name}::${path.basename(
                       file,
-                      path.extname(file)
+                      path.extname(file),
                     )}`; // tasks.hello
 
                     compilation.updateAsset(file, (old) => {
@@ -146,7 +148,7 @@ export class ScriptwriterAssetPlugin {
                       const script = parseMeta(
                         code,
                         this.getResource(file, isDev),
-                        host
+                        host,
                       );
                       if (script) {
                         cache.set(file, script);
@@ -160,7 +162,7 @@ export class ScriptwriterAssetPlugin {
                         return this.insertComment<typeof old>(
                           old,
                           commentCache,
-                          script
+                          script,
                         );
                       }
                       const source = new ReplaceSource(old as Source);
@@ -168,17 +170,17 @@ export class ScriptwriterAssetPlugin {
                       source.replace(
                         index,
                         index + search[0].length - 1,
-                        replacement
+                        replacement,
                       );
                       return this.insertComment<typeof old>(
                         source as typeof old,
                         commentCache,
-                        script
+                        script,
                       );
                     });
                   }
                 }
-              }
+              },
             );
 
             compilation.hooks.processAssets.tap(
@@ -191,11 +193,11 @@ export class ScriptwriterAssetPlugin {
                 const taskMeta = JSON.stringify(
                   this.generateTaskGallery(cache),
                   null,
-                  2
+                  2,
                 );
                 compilation.emitAsset(
                   this.options.task.filename,
-                  new webpack.sources.RawSource(taskMeta, false)
+                  new webpack.sources.RawSource(taskMeta, false),
                 );
 
                 const rewriteMeta = this.generateRewriteGallery(cache);
@@ -204,7 +206,7 @@ export class ScriptwriterAssetPlugin {
                   if (!content) continue;
                   compilation.emitAsset(
                     file,
-                    new webpack.sources.RawSource(content, false)
+                    new webpack.sources.RawSource(content, false),
                   );
                 }
 
@@ -216,10 +218,10 @@ export class ScriptwriterAssetPlugin {
                   "api/metadata.json",
                   new webpack.sources.RawSource(
                     JSON.stringify(metadata, null, 2),
-                    false
-                  )
+                    false,
+                  ),
                 );
-              }
+              },
             );
           });
 
@@ -234,7 +236,7 @@ export class ScriptwriterAssetPlugin {
 
             childProcessDone();
           });
-        }
+        },
       );
       callback();
     });
@@ -244,7 +246,7 @@ export class ScriptwriterAssetPlugin {
     if (!includes || includes.length <= 0) return [];
     const resolved = includes.map((include) => path.resolve(context, include));
     return resolved.filter(
-      (dir: string) => existsSync(dir) && statSync(dir).isDirectory()
+      (dir: string) => existsSync(dir) && statSync(dir).isDirectory(),
     );
   }
 
@@ -289,7 +291,7 @@ export class ScriptwriterAssetPlugin {
 
   private generateTaskGallery(cache: Map<string, Script>) {
     const tasks = Array.from(cache.values()).filter(
-      (script) => script instanceof Task
+      (script) => script instanceof Task,
     );
 
     return {
@@ -302,7 +304,7 @@ export class ScriptwriterAssetPlugin {
 
   private generateRewriteGallery(cache: Map<string, Script>) {
     const rewrites = Array.from(cache.entries()).filter(
-      (script) => script[1] instanceof Rewrite
+      (script) => script[1] instanceof Rewrite,
     );
     const rewriteMap = new Map<string, string>();
     const hosts = new Set();
@@ -317,7 +319,7 @@ export class ScriptwriterAssetPlugin {
       this.options.rewrite.filename,
       `${
         hosts.size > 0 ? `hostname = ${Array.from(hosts).join(", ")}\n\n` : ""
-      }${records.join("\n")}`
+      }${records.join("\n")}`,
     );
     return rewriteMap;
   }
