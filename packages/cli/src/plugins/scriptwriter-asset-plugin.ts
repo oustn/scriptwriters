@@ -11,7 +11,7 @@ import deepExtend from "deep-extend";
 import { getTypescriptFiles } from "../common/resolver.js";
 import { Entry } from "../common/types.js";
 import { getDevHost, PACKAGE } from "../common/constant.js";
-import { parseMeta, Rewrite, Script, Task } from "./comment-parser.js";
+import { parseMeta, Rewrite, Script, Task, Meta } from "./comment-parser.js";
 import { urlJoin } from "../common/helper.js";
 
 const PLUGIN = "ScriptwriterAssetPlugin";
@@ -207,6 +207,18 @@ export class ScriptwriterAssetPlugin {
                     new webpack.sources.RawSource(content, false)
                   );
                 }
+
+                const isDev = compiler.options.mode === "development";
+                const host = this.getHost(isDev);
+
+                const metadata = this.generateMetadata(cache, host);
+                compilation.emitAsset(
+                  "api/metadata.json",
+                  new webpack.sources.RawSource(
+                    JSON.stringify(metadata, null, 2),
+                    false
+                  )
+                );
               }
             );
           });
@@ -308,5 +320,38 @@ export class ScriptwriterAssetPlugin {
       }${records.join("\n")}`
     );
     return rewriteMap;
+  }
+
+  private generateMetadata(cache: Map<string, Script>, host: string) {
+    const tasks: Array<Meta & { resource: string }> = [];
+    const rewrites: Array<Meta & { resource: string }> = [];
+
+    Array.from(cache.values()).forEach((script) => {
+      if (script instanceof Task) {
+        tasks.push({
+          ...script.meta,
+          resource: script.resource,
+        });
+      } else if (script instanceof Rewrite) {
+        rewrites.push({
+          ...script.meta,
+          resource: script.resource,
+        });
+      }
+    });
+
+    return {
+      task: {
+        name: this.options.task.title ?? "Scriptwriter Tasks",
+        description:
+          this.options.task.description ?? "Tasks powered by Scriptwriter",
+        gallery: urlJoin(host, this.options.task.filename),
+        tasks,
+      },
+      rewrite: {
+        gallery: urlJoin(host, this.options.rewrite.filename),
+        rewrites,
+      },
+    };
   }
 }

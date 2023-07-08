@@ -25,6 +25,9 @@ export const webpackBase: Configuration = {
 
   resolve: {
     extensions: [".ts", ".js", ".tsx", ".css", ".scss"],
+    alias: {
+      "@mui/icons-material": "@mui/icons-material/esm",
+    },
   },
 
   output: {

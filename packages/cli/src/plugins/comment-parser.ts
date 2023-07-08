@@ -26,7 +26,7 @@ type MetaKey =
   | "version"
   | "comment";
 
-type Meta = Record<MetaKey, string | string[]>;
+export type Meta = Record<MetaKey, string | string[]>;
 
 export class Script {
   static create(meta: Meta, resource: string) {
@@ -37,6 +37,8 @@ export class Script {
     }
     return new Script(meta, resource);
   }
+
+  type = "common";
 
   constructor(public meta: Meta, public resource: string) {}
 
@@ -76,6 +78,8 @@ export class Script {
 }
 
 export class Task extends Script {
+  type = "task";
+
   constructor(public meta: Meta, public resource: string) {
     super(meta, resource);
   }
@@ -121,6 +125,7 @@ ${super.getLicense()}
 }
 
 export class Rewrite extends Script {
+  type = "rewrite";
   constructor(public meta: Meta, public resource: string) {
     super(meta, resource);
   }
