@@ -1,6 +1,13 @@
 import type { Configuration } from "webpack";
+import webpack from "webpack";
+import HtmlWebpackPlugin from "html-webpack-plugin";
+import path from "node:path";
 import { resolveEntries } from "../common/resolver.js";
-import { getDist, getScriptwriterConfig } from "../common/constant.js";
+import {
+  CLI_ROOT,
+  getDist,
+  getScriptwriterConfig,
+} from "../common/constant.js";
 import { ScriptwriterAssetPlugin } from "../plugins/scriptwriter-asset-plugin.js";
 import { getStyleLoader } from "./style-loader.js";
 
@@ -39,6 +46,20 @@ export const webpackBase: Configuration = {
   plugins: [
     new ScriptwriterAssetPlugin({
       ...config,
+    }),
+
+    new HtmlWebpackPlugin({
+      template: path.resolve(CLI_ROOT, "../index.html"),
+      meta: {
+        viewport:
+          "width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no",
+      },
+      chunks: ["main"],
+      title: config.title,
+      favicon: path.resolve(CLI_ROOT, "../favicon.ico"),
+    }),
+    new webpack.DefinePlugin({
+      TITLE: JSON.stringify(config.title),
     }),
   ],
 };

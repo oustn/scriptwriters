@@ -1,4 +1,5 @@
 export default {
+  title: 'ScriptWriter',
   task: {
     title: '示例测试脚本',
     description: '示例测试脚本, Powered by ScriptWriter',

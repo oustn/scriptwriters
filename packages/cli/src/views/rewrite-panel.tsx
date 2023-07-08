@@ -5,7 +5,12 @@ import {
   List,
   ListItemButton,
   ListItemText,
+  ListItem,
+  IconButton,
+  Link,
 } from "@mui/material";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+
 import { Rewrite, RewriteItem } from "./api/metadata.js";
 import { getRedirectUrl } from "./common/helper.js";
 
@@ -32,7 +37,7 @@ export function RewritePanel({ rewrite }: RewritePanelProps) {
       ],
     });
     window.open(url, "_blank");
-  }
+  };
 
   return (
     <Box sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
@@ -40,7 +45,9 @@ export function RewritePanel({ rewrite }: RewritePanelProps) {
         sx={{ p: 2, flex: 0, borderRadius: 2, bgcolor: "grey.100" }}
         onClick={() => handleAddGallery(rewrite)}
       >
-        <Typography variant="overline">当前重写总数：{rewrite.rewrites.length}</Typography>
+        <Typography variant="overline">
+          当前重写总数：{rewrite.rewrites.length}
+        </Typography>
       </Box>
       <Box sx={{ flex: 1 }}>
         <List>
@@ -54,20 +61,33 @@ export function RewritePanel({ rewrite }: RewritePanelProps) {
               borderBottomRightRadius: last ? 8 : 0,
             };
             return (
-              <ListItemButton
+              <ListItem
                 key={rewriteItem.resource}
                 sx={{
                   bgcolor: "grey.100",
                   mb: 0.25,
                   ...borderRadius,
                 }}
-                onClick={() => handleAdd(rewriteItem)}
+                secondaryAction={
+                  <Link
+                    href={rewriteItem.resource}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <IconButton edge="end" aria-label="comments">
+                      <OpenInNewIcon />
+                    </IconButton>
+                  </Link>
+                }
+                disablePadding
               >
-                <ListItemText
-                  primary={rewriteItem.title}
-                  secondary={rewriteItem.description}
-                />
-              </ListItemButton>
+                <ListItemButton onClick={() => handleAdd(rewriteItem)}>
+                  <ListItemText
+                    primary={rewriteItem.title}
+                    secondary={rewriteItem.description}
+                  />
+                </ListItemButton>
+              </ListItem>
             );
           })}
         </List>

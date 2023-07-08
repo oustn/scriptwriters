@@ -15,7 +15,7 @@ import SwipeableViews from "react-swipeable-views";
 
 import RestoreIcon from "@mui/icons-material/Restore";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import ArchiveIcon from "@mui/icons-material/Archive";
+import TaskAltIcon from "@mui/icons-material/TaskAlt";
 import MenuIcon from "@mui/icons-material/Menu";
 
 import { useMetadata } from "./api/metadata.js";
@@ -25,6 +25,8 @@ import { TaskPanel } from "./task-panel.js";
 const { default: SwipeableViewsWrapper } = SwipeableViews as unknown as {
   default: typeof SwipeableViews;
 };
+
+declare const TITLE: string;
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -99,7 +101,7 @@ export function App() {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              Scriptwriter
+              { TITLE || 'Scriptwriter' }
             </Typography>
           </Toolbar>
         </AppBar>
@@ -127,7 +129,7 @@ export function App() {
       >
         <BottomNavigation showLabels value={value} onChange={handleChange}>
           <BottomNavigationAction label="重写" icon={<RestoreIcon />} />
-          <BottomNavigationAction label="任务" icon={<ArchiveIcon />} />
+          <BottomNavigationAction label="任务" icon={<TaskAltIcon />} />
           <BottomNavigationAction label="我的" icon={<FavoriteIcon />} />
         </BottomNavigation>
       </Paper>
