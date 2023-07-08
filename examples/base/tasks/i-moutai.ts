@@ -15,7 +15,7 @@ call(async () => {
   await fetch("https://www.baidu.com").then(async (data) => {
     logger.info(data.text());
 
-    notify("Hello, world!", "Hello, world!", data.text(), {
+    notify("Hello, world!", "Hello, world!", await data.text(), {
       "media-url": "https://www.baidu.com/img/flexible/logo/pc/peak-result.png",
       "open-url": "https://www.baidu.com",
     });
