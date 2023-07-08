@@ -27,7 +27,7 @@ export function RewritePanel({ rewrite }: RewritePanelProps) {
         }, update-interval=86400, opt-parser=true, enabled=true`,
       ],
     });
-    window.open(url, "_blank");
+    window.open(url);
   };
 
   const handleAddGallery = (rewrite: Rewrite) => {
@@ -45,9 +45,8 @@ export function RewritePanel({ rewrite }: RewritePanelProps) {
         sx={{ p: 2, flex: 0, borderRadius: 2, bgcolor: "grey.100" }}
         onClick={() => handleAddGallery(rewrite)}
       >
-        <Typography variant="overline">
-          当前重写总数：{rewrite.rewrites.length}
-        </Typography>
+        <Typography variant="h4">重写列表</Typography>
+        <Typography variant="overline">当前重写总数：{rewrite.rewrites.length}</Typography>
       </Box>
       <Box sx={{ flex: 1 }}>
         <List>

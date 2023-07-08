@@ -1,10 +1,11 @@
 import chalk from "chalk";
+import fs from "fs-extra";
 import { getPort } from "portfinder";
 import WebpackDevServer from "webpack-dev-server";
 import webpack from "webpack";
 
 import { getDevConfig } from "../config/webpack.dev.js";
-import { GREEN, setDevHost } from "../common/constant.js";
+import { GREEN, setDevHost, CONFIG_FILE } from "../common/constant.js";
 
 function logServerInfo(port: number) {
   const ip = WebpackDevServer.internalIPSync("v4");
@@ -27,7 +28,7 @@ function runDevServer(port: number, config: ReturnType<typeof getDevConfig>) {
       ...config.devServer,
       port,
     },
-    webpack(config)
+    webpack(config),
   );
 
   // this is a hack to disable wds status log
@@ -54,6 +55,6 @@ export async function compileDev() {
 
       logServerInfo(port);
       runDevServer(port, config);
-    }
+    },
   );
 }
