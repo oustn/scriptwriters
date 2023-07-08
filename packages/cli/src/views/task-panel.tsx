@@ -7,7 +7,10 @@ import {
   ListItemText,
   ListItemAvatar,
   Avatar,
+  Link,
+  IconButton,
 } from "@mui/material";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { Task } from "./api/metadata.js";
 import { getTaskRedirectUrl } from "./common/helper.js";
 
@@ -40,7 +43,7 @@ export function TaskPanel({ task }: RewritePanelProps) {
               borderTopRightRadius: first ? 8 : 0,
               borderBottomLeftRadius: last ? 8 : 0,
               borderBottomRightRadius: last ? 8 : 0,
-            }
+            };
             return (
               <ListItem
                 key={taskItem.resource}
@@ -49,6 +52,17 @@ export function TaskPanel({ task }: RewritePanelProps) {
                   mb: 0.25,
                   ...borderRadius,
                 }}
+                secondaryAction={
+                  <Link
+                    href={taskItem.resource}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <IconButton edge="end" aria-label="comments">
+                      <OpenInNewIcon />
+                    </IconButton>
+                  </Link>
+                }
               >
                 <ListItemAvatar>
                   <Avatar src={taskItem.icon} />
