@@ -1,5 +1,11 @@
 # @scriptwriter/quantumult
 
+## 1.0.5
+
+### Patch Changes
+
+- e6a1ae4: add fetch types
+
 ## 1.0.4
 
 ### Patch Changes

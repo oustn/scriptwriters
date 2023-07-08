@@ -1,5 +1,12 @@
 # @scriptwriter/cli
 
+## 1.0.6
+
+### Patch Changes
+
+- a812066: support generate assets index
+- 52a4764: cli build with nest-cli & support sass
+
 ## 1.0.5
 
 ### Patch Changes
