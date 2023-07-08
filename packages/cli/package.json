@@ -10,7 +10,8 @@
   "typings": "lib/index.d.ts",
   "files": [
     "lib",
-    "index.html"
+    "index.html",
+    "favicon.ico"
   ],
   "type": "module",
   "scripts": {
