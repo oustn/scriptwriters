@@ -1,5 +1,11 @@
 # @scriptwriter/cli
 
+## 1.0.9
+
+### Patch Changes
+
+- 8b3f0f9: fix will clear by add
+
 ## 1.0.8
 
 ### Patch Changes
