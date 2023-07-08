@@ -1,5 +1,11 @@
 # @scriptwriter/cli
 
+## 1.0.7
+
+### Patch Changes
+
+- e6ad419: add icon gallery and support parse comment
+
 ## 1.0.6
 
 ### Patch Changes
