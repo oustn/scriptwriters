@@ -16,11 +16,13 @@ import SwipeableViews from "react-swipeable-views";
 import RestoreIcon from "@mui/icons-material/Restore";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import TaskAltIcon from "@mui/icons-material/TaskAlt";
-import MenuIcon from "@mui/icons-material/Menu";
+import HomeIcon from "@mui/icons-material/Home";
+import ImageIcon from "@mui/icons-material/Image";
 
 import { useMetadata } from "./api/metadata.js";
 import { RewritePanel } from "./rewrite-panel.js";
 import { TaskPanel } from "./task-panel.js";
+import { IconPanel } from "./icon-panel.js";
 
 const { default: SwipeableViewsWrapper } = SwipeableViews as unknown as {
   default: typeof SwipeableViews;
@@ -98,10 +100,10 @@ export function App() {
               aria-label="menu"
               sx={{ mr: 2 }}
             >
-              <MenuIcon />
+              <HomeIcon />
             </IconButton>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              { TITLE || 'Scriptwriter' }
+              {TITLE || "Scriptwriter"}
             </Typography>
           </Toolbar>
         </AppBar>
@@ -119,7 +121,10 @@ export function App() {
           <TaskPanel task={data.task} />
         </TabPanel>
         <TabPanel value={value} index={2} dir={theme.direction}>
-          Item Three
+          <IconPanel icon={data.icon} />
+        </TabPanel>
+        <TabPanel value={value} index={3} dir={theme.direction}>
+          TODO
         </TabPanel>
       </SwipeableViewsWrapper>
 
@@ -130,6 +135,7 @@ export function App() {
         <BottomNavigation showLabels value={value} onChange={handleChange}>
           <BottomNavigationAction label="重写" icon={<RestoreIcon />} />
           <BottomNavigationAction label="任务" icon={<TaskAltIcon />} />
+          <BottomNavigationAction label="图标" icon={<ImageIcon />} />
           <BottomNavigationAction label="我的" icon={<FavoriteIcon />} />
         </BottomNavigation>
       </Paper>

@@ -47,6 +47,7 @@ export function RewritePanel({ rewrite }: RewritePanelProps) {
       >
         <Typography variant="h4">重写列表</Typography>
         <Typography variant="overline">当前重写总数：{rewrite.rewrites.length}</Typography>
+        <Typography variant="caption" display="block">点击添加到 Quantumult X</Typography>
       </Box>
       <Box sx={{ flex: 1 }}>
         <List>

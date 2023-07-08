@@ -6,10 +6,11 @@ export function getRedirectUrl(payload: Record<string, string | string[]>) {
   )}`;
 }
 
-export function getTaskRedirectUrl(
+export function getUIRedirectUrl(
   payload: Record<string, string | string[]> | string[],
+  type: string,
 ) {
-  return `https://quantumult.app/x/open-app/ui?module=gallery&type=task&action=update&content=${JSON.stringify(
+  return `https://quantumult.app/x/open-app/ui?module=gallery&type=${type}&action=update&content=${JSON.stringify(
     payload,
     null,
     2,

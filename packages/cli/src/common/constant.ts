@@ -14,6 +14,8 @@ export const resolve = appRoot.resolve;
 
 export const CONFIG_FILE = join(ROOT, "scriptwriter.config.mjs");
 
+export const ICON_DIR = join(ROOT, "assets/icons");
+
 export const ASSETS = join(ROOT, "assets");
 
 export const PACKAGE_JSON_FILE = join(ROOT, "package.json");

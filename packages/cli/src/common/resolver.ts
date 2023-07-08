@@ -12,15 +12,17 @@ function getSourceRoot() {
   return includes ? [includes] : defaultIncludes;
 }
 
-export function getTypescriptFiles(dir: string) {
+export function getTypedFiles(dir: string, ext: string | string[]) {
   const files: string[] = [];
   const list = fs.readdirSync(dir);
   list.forEach((file) => {
     file = path.join(dir, file);
     const stat = fs.statSync(file);
     if (stat && stat.isDirectory()) {
-      files.push(...getTypescriptFiles(file));
-    } else if (file.endsWith(".ts")) {
+      files.push(...getTypedFiles(file, ext));
+    } else if (
+      (Array.isArray(ext) ? ext : [ext]).includes(path.extname(file))
+    ) {
       files.push(file);
     }
   });

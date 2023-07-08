@@ -8,10 +8,17 @@ import FlagDependencyUsagePlugin from "webpack/lib/FlagDependencyUsagePlugin.js"
 import sources, { Source } from "webpack-sources";
 import deepExtend from "deep-extend";
 
-import { getTypescriptFiles } from "../common/resolver.js";
+import { getTypedFiles } from "../common/resolver.js";
 import { Entry } from "../common/types.js";
 import { getDevHost, PACKAGE } from "../common/constant.js";
-import { parseMeta, Rewrite, Script, Task, Meta } from "./comment-parser.js";
+import {
+  parseMeta,
+  Rewrite,
+  Script,
+  Task,
+  Meta,
+  parseIcon,
+} from "./comment-parser.js";
 import { urlJoin } from "../common/helper.js";
 
 const PLUGIN = "ScriptwriterAssetPlugin";
@@ -29,6 +36,11 @@ export interface ScriptwriterAssetPluginOptions {
   };
   rewrite: {
     filename: string;
+  };
+  icon: {
+    filename: string;
+    title: string;
+    description: string;
   };
 }
 
@@ -50,10 +62,15 @@ export class ScriptwriterAssetPlugin {
     task: {
       filename: "tasks.json",
       title: "自动化任务",
-      description: "",
+      description: "自定义自动化任务",
     },
     rewrite: {
       filename: "rewrites.conf",
+    },
+    icon: {
+      filename: "icons.json",
+      title: "图标合集",
+      description: "自定义图标合集",
     },
   };
 
@@ -213,11 +230,21 @@ export class ScriptwriterAssetPlugin {
                 const isDev = compiler.options.mode === "development";
                 const host = this.getHost(isDev);
 
-                const metadata = this.generateMetadata(cache, host);
+                const icons = parseIcon(host);
+
+                const metadata = this.generateMetadata(cache, icons, host);
                 compilation.emitAsset(
                   "api/metadata.json",
                   new webpack.sources.RawSource(
                     JSON.stringify(metadata, null, 2),
+                    false,
+                  ),
+                );
+
+                compilation.emitAsset(
+                  this.options.icon.filename,
+                  new webpack.sources.RawSource(
+                    JSON.stringify(this.generateIconGallery(icons), null, 2),
                     false,
                   ),
                 );
@@ -254,7 +281,7 @@ export class ScriptwriterAssetPlugin {
     const entries: Entry[] = [];
 
     for (const source of sources) {
-      const files = getTypescriptFiles(source);
+      const files = getTypedFiles(source, ".ts");
       files.forEach((file) => {
         const relative = path.relative(context, file);
         const name = relative.replace(/\.ts$/, "").replace(/\//g, ".");
@@ -324,7 +351,23 @@ export class ScriptwriterAssetPlugin {
     return rewriteMap;
   }
 
-  private generateMetadata(cache: Map<string, Script>, host: string) {
+  private generateIconGallery(icons: Script[]) {
+    return {
+      name: this.options.icon.title ?? "Scriptwriter Icons",
+      description:
+        this.options.icon.description ?? "Icons powered by Scriptwriter",
+      icons: icons.map((icon) => ({
+        name: icon.meta.title,
+        url: icon.resource,
+      })),
+    };
+  }
+
+  private generateMetadata(
+    cache: Map<string, Script>,
+    icons: Script[],
+    host: string,
+  ) {
     const tasks: Array<Meta & { resource: string }> = [];
     const rewrites: Array<Meta & { resource: string }> = [];
 
@@ -353,6 +396,16 @@ export class ScriptwriterAssetPlugin {
       rewrite: {
         gallery: urlJoin(host, this.options.rewrite.filename),
         rewrites,
+      },
+      icon: {
+        name: this.options.icon.title ?? "Scriptwriter Icons",
+        description:
+          this.options.icon.description ?? "Icons powered by Scriptwriter",
+        icons: icons.map((icon) => ({
+          name: icon.meta.title,
+          resource: icon.resource,
+        })),
+        gallery: urlJoin(host, this.options.icon.filename),
       },
     };
   }
