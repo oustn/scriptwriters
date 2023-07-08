@@ -17,6 +17,8 @@ const ICON = "icon";
 
 const types = [TASK, REWRITE, ICON];
 
+const BANK = Array(50).fill("*").join("");
+
 const CORN_REG =
   /^(\*|[0-5]?\d)(\/[0-5]?\d)?(\s+(\*|[01]?\d|2[0-3])(\/[01]?\d|2[0-3])?){4}$/;
 
@@ -82,7 +84,7 @@ export class Script {
 脚本作者：${config.author ?? PACKAGE.author?.name ?? PACKAGE.author ?? "匿名"}
 脚本版本：${this.meta.version || "1.0.0"}
 更新时间：${new Date().toLocaleString()}
-脚本说明：${this.meta.description ?? ""}${customComment}`;
+脚本说明：${this.meta.description ?? ""}${customComment}\n`;
   }
 
   getLicense(): string {
@@ -116,10 +118,6 @@ export class Task extends Script {
       record += `, tag=${tag}`;
     }
 
-    if (this.meta.enable) {
-      record += `, enable=${this.meta.enable}`;
-    }
-
     return record;
   }
 
@@ -127,16 +125,20 @@ export class Task extends Script {
     return `${super.getComment()}
 ${
   CORN_REG.test(this.meta.corn as string)
-    ? `\nhttps://crontab.guru/#${(this.meta.corn as string).replace(
+    ? `https://crontab.guru/#${(this.meta.corn as string).replace(
         /\s/g,
         "_",
       )}\n`
     : ""
 }
-[task_local]
-${this.formatScript()}
-
 ${super.getLicense()}
+
+|${BANK}
+|
+|[task_local]
+|${this.formatScript()}, enable=true
+|
+|${BANK}
 `;
   }
 }
@@ -177,14 +179,17 @@ ${record}
 
   getComment(): string {
     return `${super.getComment()}
-
-[rewrite_local]
-${this.meta.url} url ${this.meta.rewrite} ${this.resource}
-
-[mitm]
-hostname = ${this.hosts.join(", ")}
-
 ${super.getLicense()}
+
+|${BANK}
+|
+|[rewrite_local]
+|${this.meta.url} url ${this.meta.rewrite} ${this.resource}
+|
+|[mitm]
+|hostname = ${this.hosts.join(", ")}
+|
+|${BANK}
 `;
   }
 }

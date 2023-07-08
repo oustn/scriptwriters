@@ -52,6 +52,7 @@ const wrapComment = (str: string) => {
     .split("\n")
     .join("\n * ")
     .replace(/\s+\n/g, "\n")
+    .replace(/\x20\*\x20\|/g, "")
     .trimEnd()}\n */`;
 };
 
