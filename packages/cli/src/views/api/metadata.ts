@@ -30,9 +30,22 @@ export interface Rewrite {
   gallery: string;
 }
 
+export interface Icon {
+  name: string;
+  description: string;
+  icons: IconItem[];
+  gallery: string;
+}
+
+export interface IconItem {
+  name: string;
+  resource: string;
+}
+
 interface Metadata {
   task: Task;
   rewrite: Rewrite;
+  icon: Icon;
 }
 
 export function useMetadata() {

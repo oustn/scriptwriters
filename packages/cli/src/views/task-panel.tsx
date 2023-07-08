@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { Task } from "./api/metadata.js";
-import { getTaskRedirectUrl } from "./common/helper.js";
+import { getUIRedirectUrl } from "./common/helper.js";
 
 interface RewritePanelProps {
   task: Task;
@@ -20,7 +20,7 @@ interface RewritePanelProps {
 
 export function TaskPanel({ task }: RewritePanelProps) {
   const handleAdd = (task: Task) => {
-    const url = getTaskRedirectUrl([task.gallery]);
+    const url = getUIRedirectUrl([task.gallery], 'task');
     window.open(url, "_blank");
   };
 
@@ -32,6 +32,7 @@ export function TaskPanel({ task }: RewritePanelProps) {
       >
         <Typography variant="h4">{task.name}</Typography>
         <Typography variant="overline">{task.description}</Typography>
+        <Typography variant="caption" display="block">点击添加到 Quantumult X</Typography>
       </Box>
       <Box sx={{ flex: 1 }}>
         <List>

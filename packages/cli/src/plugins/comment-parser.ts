@@ -1,12 +1,21 @@
+import fs from "fs-extra";
+import path from "path";
 import { parse, tokenizers } from "comment-parser";
 
-import { PACKAGE, getScriptwriterConfig } from "../common/constant.js";
+import {
+  PACKAGE,
+  getScriptwriterConfig,
+  ICON_DIR,
+  ROOT,
+} from "../common/constant.js";
 import { urlJoin } from "../common/helper.js";
+import { getTypedFiles } from "../common/resolver.js";
 
 const TASK = "task";
 const REWRITE = "rewrite";
+const ICON = "icon";
 
-const types = [TASK, REWRITE];
+const types = [TASK, REWRITE, ICON];
 
 const CORN_REG =
   /^(\*|[0-5]?\d)(\/[0-5]?\d)?(\s+(\*|[01]?\d|2[0-3])(\/[01]?\d|2[0-3])?){4}$/;
@@ -34,13 +43,18 @@ export class Script {
       return new Task(meta, resource);
     } else if (meta.type === REWRITE) {
       return new Rewrite(meta, resource);
+    } else if (meta.type === ICON) {
+      return new Icon(meta, resource);
     }
     return new Script(meta, resource);
   }
 
   type = "common";
 
-  constructor(public meta: Meta, public resource: string) {}
+  constructor(
+    public meta: Meta,
+    public resource: string,
+  ) {}
 
   isValid() {
     return false;
@@ -80,7 +94,10 @@ export class Script {
 export class Task extends Script {
   type = "task";
 
-  constructor(public meta: Meta, public resource: string) {
+  constructor(
+    public meta: Meta,
+    public resource: string,
+  ) {
     super(meta, resource);
   }
 
@@ -112,7 +129,7 @@ ${
   CORN_REG.test(this.meta.corn as string)
     ? `\nhttps://crontab.guru/#${(this.meta.corn as string).replace(
         /\s/g,
-        "_"
+        "_",
       )}\n`
     : ""
 }
@@ -126,13 +143,17 @@ ${super.getLicense()}
 
 export class Rewrite extends Script {
   type = "rewrite";
-  constructor(public meta: Meta, public resource: string) {
+
+  constructor(
+    public meta: Meta,
+    public resource: string,
+  ) {
     super(meta, resource);
   }
 
   get hosts() {
     return Array.from(
-      new Set((this.meta.host as string).split(",").map((d) => d.trim()))
+      new Set((this.meta.host as string).split(",").map((d) => d.trim())),
     );
   }
 
@@ -168,10 +189,19 @@ ${super.getLicense()}
   }
 }
 
+export class Icon extends Script {
+  constructor(
+    public meta: Meta,
+    public resource: string,
+  ) {
+    super(meta, resource);
+  }
+}
+
 export function parseMeta(
   code: string,
   resource: string,
-  host: string
+  host: string,
 ): Script | undefined {
   const blocks = parse(code, {
     tokenizers: [tokenizers.tag(), tokenizers.description("compact")],
@@ -183,8 +213,8 @@ export function parseMeta(
 
   const scriptComment = blocks.find((item) =>
     item.tags.some(
-      (tag) => tag.tag === "script" && types.includes(tag.description)
-    )
+      (tag) => tag.tag === "script" && types.includes(tag.description),
+    ),
   );
   if (!scriptComment) {
     return;
@@ -212,4 +242,24 @@ export function parseMeta(
   }
 
   return Script.create(meta, resource);
+}
+
+export function parseIcon(host: string): Script[] {
+  if (!fs.existsSync(ICON_DIR)) {
+    return [];
+  }
+  const icons = getTypedFiles(ICON_DIR, ".png");
+  return icons.map((icon) => {
+    const relative = path.relative(ROOT, icon);
+    return Script.create(
+      {
+        type: ICON,
+        title: path
+          .relative(ICON_DIR, icon)
+          .replace(/\.png$/, "")
+          .replace(/\//g, "."),
+      } as Meta,
+      urlJoin(host, relative),
+    );
+  });
 }
