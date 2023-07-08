@@ -1,5 +1,11 @@
 # @scriptwriter/cli
 
+## 1.0.8
+
+### Patch Changes
+
+- d7f8e7f: fix ico not found
+
 ## 1.0.7
 
 ### Patch Changes
