@@ -8,6 +8,10 @@
   "files": [
     "lib"
   ],
+  "exports": {
+    ".": "./lib/index.js",
+    "./express": "./lib/express/index.js"
+  },
   "sideEffects": false,
   "scripts": {
     "dev": "tsc --watch",
@@ -26,6 +30,10 @@
   },
   "dependencies": {
     "loglevel": "^1.8.1",
+    "path-to-regexp": "^6.2.1",
     "whatwg-fetch": "^3.6.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.17"
   }
 }
