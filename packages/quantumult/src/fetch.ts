@@ -1,11 +1,11 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 export { Headers, Request, Response } from "whatwg-fetch";
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import {
   Request as FetchRequest,
   Response as FetchResponse,
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
 } from "whatwg-fetch";
 export function fetch(
   input: RequestInfo,
