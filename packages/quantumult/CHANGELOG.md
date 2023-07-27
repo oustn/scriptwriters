@@ -1,5 +1,11 @@
 # @scriptwriter/quantumult
 
+## 1.0.6
+
+### Patch Changes
+
+- 036f1b8: fix fetch request body error
+
 ## 1.0.5
 
 ### Patch Changes
