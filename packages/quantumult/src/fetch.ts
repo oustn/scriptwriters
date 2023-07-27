@@ -1,13 +1,18 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 export { Headers, Request, Response } from "whatwg-fetch";
-
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import {
+  Request as FetchRequest,
+  Response as FetchResponse,
+} from "whatwg-fetch";
 export function fetch(
   input: RequestInfo,
-  init?: RequestInit
+  init?: RequestInit,
 ): Promise<Response> {
   return new Promise(function (resolve, reject) {
-    const request = new Request(input, init);
+    const request = new FetchRequest(input, init);
 
     if (request.signal && request.signal.aborted) {
       return reject(new DOMException("Aborted", "AbortError"));
@@ -30,11 +35,11 @@ export function fetch(
       .then((data) => {
         const { statusCode, statusText, headers, body } = data;
         resolve(
-          new Response(body, {
+          new FetchResponse(body, {
             status: statusCode,
             statusText,
             headers,
-          })
+          }),
         );
       })
       .catch((error: unknown) => {
@@ -42,8 +47,8 @@ export function fetch(
           new TypeError(
             `Network request failed: ${
               (error as Error).message || (error as { error: string }).error
-            }`
-          )
+            }`,
+          ),
         );
       });
   });
@@ -92,7 +97,7 @@ declare class Headers {
   values(): Iterator<string>;
   forEach(
     fn: (value: string, name: string, headers: Headers) => unknown,
-    thisArg?: Headers
+    thisArg?: Headers,
   ): void;
 }
 
