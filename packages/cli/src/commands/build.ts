@@ -44,16 +44,18 @@ function processCustomCopy() {
           if (await exists(fromDist)) {
             await copy(fromDist, toDist);
           }
-        }
-      )
+        },
+      ),
     );
   }
 }
 
-export async function build() {
+export async function build(skipInstall: boolean) {
   setNodeEnv("production");
   await clean();
-  await installDependencies();
+  if (!skipInstall) {
+    await installDependencies();
+  }
   try {
     await compile();
   } catch (e) {

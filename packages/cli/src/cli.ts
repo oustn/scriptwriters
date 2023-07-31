@@ -18,9 +18,11 @@ program
 program
   .command("build")
   .description("Compile components in production mode")
-  .action(async () => {
+  .option("--skip-install", "Skip install dependencies")
+  .action(async (options) => {
+    const { skipInstall } = options;
     const { build } = await import("./commands/build.js");
-    return build();
+    return build(skipInstall);
   });
 
 program.parse();

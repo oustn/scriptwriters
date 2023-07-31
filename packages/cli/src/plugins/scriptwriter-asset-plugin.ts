@@ -116,6 +116,15 @@ export class ScriptwriterAssetPlugin {
         outputOptions,
       );
 
+      const index = childCompiler.hooks.compilation.taps.findIndex(
+        (tap) =>
+          tap.name === "SourceMapDevToolPlugin" ||
+          tap.name === "EvalSourceMapDevToolPlugin",
+      );
+      if (index > -1) {
+        childCompiler.hooks.compilation.taps.splice(index, 1);
+      }
+
       childCompiler.context = compiler.context;
       childCompiler.inputFileSystem = compiler.inputFileSystem;
       childCompiler.outputFileSystem = compiler.outputFileSystem;
