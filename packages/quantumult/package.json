@@ -8,6 +8,16 @@
   "files": [
     "lib"
   ],
+  "exports": {
+    ".": {
+      "import": "./lib/index.js",
+      "require": "./lib/index.js"
+    },
+    "./decorators": {
+      "import": "./lib/decorators/index.js",
+      "require": "./lib/decorators/index.js"
+    }
+  },
   "sideEffects": false,
   "scripts": {
     "dev": "tsc --watch",
@@ -26,6 +36,7 @@
   },
   "dependencies": {
     "loglevel": "^1.8.1",
+    "reflect-metadata": "^0.1.13",
     "whatwg-fetch": "^3.6.2"
   }
 }

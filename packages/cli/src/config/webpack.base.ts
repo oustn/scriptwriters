@@ -27,6 +27,13 @@ export const webpackBase: Configuration = {
         test: /\.s[ac]ss$/i,
         use: getStyleLoader(),
       },
+      {
+        test: /\.(png|svg|jpe?g|webp|tiff?)$/i,
+        type: "asset/resource",
+        // use: {
+        //   loader: path.resolve(CLI_ROOT, "loaders/image-resize.js"),
+        // },
+      },
     ],
   },
 
