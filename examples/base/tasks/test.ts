@@ -14,7 +14,7 @@ call(async () => {
   console.log("aa");
   const app = express();
   const route = new Route('/')
-  route.get('123')
+  route.get(() => {})
 
   console.log(app);
 });
