@@ -9,14 +9,16 @@
  * @description 打开企业微信
  */
 
-import { call } from "@scriptwriter/quantumult";
+import { call, logger } from "@scriptwriter/quantumult";
+
+declare const $request: any;
 
 call(async () => {
+  logger.info($request);
   return {
-    status: "HTTP/1.1 301",
+    status: "HTTP/1.1 201",
     headers: {
       "Content-Type": "text/plain; charset=utf-8",
-      Location: "wxwork://message",
     },
   };
 });

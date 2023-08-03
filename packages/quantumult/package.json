@@ -8,6 +8,10 @@
   "files": [
     "lib"
   ],
+  "exports": {
+    ".": "./lib/index.js",
+    "./router": "./lib/router/index.js"
+  },
   "sideEffects": false,
   "scripts": {
     "dev": "tsc --watch",
