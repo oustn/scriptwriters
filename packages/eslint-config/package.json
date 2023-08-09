@@ -8,8 +8,8 @@
   "dependencies": {
     "eslint-config-prettier": "^8.3.0",
     "eslint-config-turbo": "^1.9.3",
-    "@typescript-eslint/eslint-plugin": "^5.59.11",
-    "@typescript-eslint/parser": "^5.59.11"
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0"
   },
   "publishConfig": {
     "access": "public",
