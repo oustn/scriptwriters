@@ -34,7 +34,7 @@
     "consola": "^3.1.0",
     "css-loader": "^6.8.1",
     "deep-extend": "^0.6.0",
-    "execa": "^7.1.1",
+    "execa": "^8.0.0",
     "fs-extra": "^11.1.1",
     "html-webpack-plugin": "^5.5.3",
     "lodash": "^4.17.21",
