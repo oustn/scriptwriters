@@ -1,5 +1,11 @@
 # @scriptwriter/cli
 
+## 1.0.10
+
+### Patch Changes
+
+- 6bebe04: 移除 cli 的脚本构建 sourcemap
+
 ## 1.0.9
 
 ### Patch Changes
