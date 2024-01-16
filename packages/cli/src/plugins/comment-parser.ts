@@ -35,16 +35,17 @@ type MetaKey =
   | "rewrite"
   | "enable"
   | "version"
-  | "comment";
+  | "comment"
+  | "value";
 
 export type Meta = Record<MetaKey, string | string[]>;
 
 export class Script {
-  static create(meta: Meta, resource: string) {
+  static create(meta: Meta, resource: string, appendMetas?: Meta[]) {
     if (meta.type === TASK) {
       return new Task(meta, resource);
     } else if (meta.type === REWRITE) {
-      return new Rewrite(meta, resource);
+      return new Rewrite(meta, resource, appendMetas);
     } else if (meta.type === ICON) {
       return new Icon(meta, resource);
     }
@@ -149,13 +150,19 @@ export class Rewrite extends Script {
   constructor(
     public meta: Meta,
     public resource: string,
+    public appendMetas?: Meta[],
   ) {
     super(meta, resource);
   }
 
   get hosts() {
+    const meta = [this.meta, ...(this.appendMetas ?? [])];
     return Array.from(
-      new Set((this.meta.host as string).split(",").map((d) => d.trim())),
+      new Set(
+        meta
+          .map((d) => (d.host as string).split(",").map((d) => d.trim()))
+          .flat(),
+      ),
     );
   }
 
@@ -163,8 +170,20 @@ export class Rewrite extends Script {
     return !!(this.meta.host && this.meta.url && this.meta.rewrite);
   }
 
+  private appendFormatRecord() {
+    if (!this.appendMetas?.length) return "";
+    return `\n${this.appendMetas
+      .map(
+        (meta) =>
+          `${meta.url} url ${meta.rewrite} ${meta.value ?? this.resource}`,
+      )
+      .join("\n")}`;
+  }
+
   formatRecord() {
-    return `${this.meta.url} url ${this.meta.rewrite} ${this.resource}`;
+    return `${this.meta.url} url ${this.meta.rewrite} ${
+      this.meta.value ?? this.resource
+    }${this.appendFormatRecord()}`;
   }
 
   formatScript(): string {
@@ -184,7 +203,18 @@ ${super.getLicense()}
 |${BANK}
 |
 |[rewrite_local]
-|${this.meta.url} url ${this.meta.rewrite} ${this.resource}
+|${this.meta.url} url ${this.meta.rewrite} ${this.meta.value ?? this.resource}${
+      this.appendMetas?.length
+        ? `\n${this.appendMetas
+            .map(
+              (meta) =>
+                `|${meta.url} url ${meta.rewrite} ${
+                  meta.value ?? this.resource
+                }`,
+            )
+            .join("\n")}`
+        : ""
+    }
 |
 |[mitm]
 |hostname = ${this.hosts.join(", ")}
@@ -246,7 +276,30 @@ export function parseMeta(
     meta.title = scriptComment.description;
   }
 
-  return Script.create(meta, resource);
+  // 支持多个
+  const appendScriptComments = blocks.filter((item) => {
+    return (
+      item !== scriptComment && item.tags.some((tag) => tag.tag === "script")
+    );
+  });
+
+  const appendMetas = appendScriptComments.map((item) => {
+    return item.tags.reduce((prev, curr) => {
+      const key = curr.tag === "script" ? "type" : (curr.tag as MetaKey);
+      if (Array.isArray(prev[key])) {
+        (prev[key] as string[]).push(curr.description);
+        return prev;
+      }
+      prev[(curr.tag === "script" ? "type" : curr.tag) as MetaKey] =
+        curr.description;
+      if (curr.tag === "icon" || curr.tag === "comment") {
+        return prev;
+      }
+      return prev;
+    }, {} as Meta) as Meta;
+  });
+
+  return Script.create(meta, resource, appendMetas);
 }
 
 export function parseIcon(host: string): Script[] {
